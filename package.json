@@ -7,7 +7,9 @@
     "react": "^16.13.1",
     "react-datepicker": "^2.14.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.3"
+    "react-scripts": "^3.4.3",
+    "w3c-xmlhttprequest": "^3.0.0",
+    "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
     "audit": "npm audit fix",

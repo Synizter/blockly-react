@@ -137,24 +137,138 @@ Blockly.Blocks['robot_action_move_right'] = {
 };
 
 var RobotActionSpeak = {
-  type: 'block_type',
-  message0: 'Temi speaks %1',
-  args0: [
+  "type": "block_type",
+  "message0": "Temi Speak %1 %2",
+  "args0": [
     {
-      type: 'input_value',
-      name: 'TEXT_TO_SPEACH',
-      check: 'String',
+      "type": "input_value",
+      "name": "TTS",
+      "check": "String"
     },
+    {
+      "type": "field_dropdown",
+      "name": "LANG",
+      "options": [
+        [
+          "English",
+          "EN"
+        ],
+        [
+          "Thai",
+          "TH"
+        ]
+      ]
+    }
   ],
-  previousStatement: null,
-  nextStatement: null,
-  colour: 230,
-  tooltip: '',
-  helpUrl: '',
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "",
+  "helpUrl": ""
 };
 Blockly.Blocks['robot_action_speak'] = {
   init: function () {
     this.jsonInit(RobotActionSpeak);
     this.setStyle('loop_blocks');
   },
+};
+
+
+
+
+
+
+
+//DUMMY BLOCK
+var dmDialogStart = {
+  "type": "block_type",
+  "message0": "Temi realize intention",
+  "inputsInline": false,
+  "output": null,
+  "colour": 290,
+  "tooltip": "",
+  "helpUrl": ""
+}
+Blockly.Blocks['dm_robot_action_start_cov'] = {
+  init: function () {
+    this.jsonInit(dmDialogStart);
+    this.setStyle('loop_blocks');
+  },
+};
+
+var dmIntention = {
+    "type": "block_type",
+    "lastDummyAlign0": "CENTRE",
+    "message0": "Intention %1 %2",
+    "args0": [
+      {
+        "type": "input_dummy",
+        "align": "CENTRE"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "Inteion",
+        "options": [
+          [
+            "ask for help",
+            "REQ_HELP"
+          ],
+          [
+            "ask for direction",
+            "REQ_DIR"
+          ],
+          [
+            "contact",
+            "REQ_CONTACT"
+          ]
+        ]
+      }
+    ],
+    "inputsInline": true,
+    "output": null,
+    "colour": 290,
+    "tooltip": "",
+    "helpUrl": ""
+};
+Blockly.Blocks['dm_robot_intetion'] = {
+  init: function () {
+    this.jsonInit(dmIntention);
+    this.setStyle('loop_blocks');
+  },
+  };
+
+
+var dmCallStaff ={
+  "type": "block_type",
+  "message0": "Call Staff",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 290,
+  "tooltip": "",
+  "helpUrl": ""
+
+};
+Blockly.Blocks['dm_robot_callstaff'] = {
+init: function () {
+  this.jsonInit(dmCallStaff);
+  this.setStyle('loop_blocks');
+},
+};
+
+var dmShowMapAndDirection ={
+  "type": "block_type",
+  "message0": "Open map",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 290,
+  "tooltip": "",
+  "helpUrl": ""
+
+};
+Blockly.Blocks['dm_robot_show_dir'] = {
+init: function () {
+  this.jsonInit(dmShowMapAndDirection);
+  this.setStyle('loop_blocks');
+},
 };
