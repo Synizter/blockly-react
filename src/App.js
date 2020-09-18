@@ -41,15 +41,8 @@ class App extends React.Component {
 
   generateCode = () => {
     var code = '';
-    code += 'var actionID = 0;\n';
+    code += 'var actionID = 1;\n';
     code += 'var url = \'https://temi-cmd.firebaseio.com/\'\n';
-    //Create uploading status
-    // code += 'var speak_req = new XMLHttpRequest();\n';
-    // code += 'var json_content = \'{"status":"UPLOADING"}\';\n';
-    // code += "var url = 'https://temi-cmd.firebaseio.com/ProgramInfo/status.json';\n";
-    // code += "speak_req.open('PUT', url, true);\n";
-    // code += "speak_req.setRequestHeader('Content-Type', 'application/json');\n";
-    // code += 'speak_req.send(JSON.stringify(JSON.parse(json_content)));\n';
 
     code += 'function makeRequest(url,json_content) {\n\
       return new Promise(function (resolve, reject) {\n\

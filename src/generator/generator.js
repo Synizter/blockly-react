@@ -59,58 +59,38 @@ Blockly.JavaScript['robot_action_speak'] = function(block) {
   var content = '\'{"order":<>, "action":"SPEAK", "lang":"{}", "content":"><"}\'.replace(/<>/g, actionID)\n'.replace(/></g, tts.replace(/'/g, ''));
   content = content.replace(/{}/g, lang.replace(/'/g, ''));
   var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
-  code += 'actionID += 1;\n';
+  code += 'actionID += 1;\n\n';
 
 
   return code;
 }
 
 Blockly.JavaScript['robot_action_move_forward'] = function (block) {
-  var code = "";
-  code += 'var speak_req = new XMLHttpRequest();\n';
-  code += 'var json_content = \'{"order":<>, "action":"MOVE", "content":"FORWARD"}\'.replace(/<>/g, actionID);\n';
-  code += "var url = 'https://temi-cmd.firebaseio.com/ActionList/action_' + actionID + '.json';\n";
-  code += "speak_req.open('PUT', url, true);\n";
-  code += "speak_req.setRequestHeader('Content-Type', 'application/json');\n";
-  code += 'speak_req.send(JSON.stringify(JSON.parse(json_content)));\n';
-  code += 'actionID += 1;\n\n\n';
+  var content = '\'{"order":<>, "action":"MOVE", "content":"FORWARD"}\'.replace(/<>/g, actionID)\n'
+  var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
+  code += 'actionID += 1;\n\n';
   return code;
 }
 
 Blockly.JavaScript['robot_action_move_backward'] = function (block) {
-  var code = "";
-  code += 'var speak_req = new XMLHttpRequest();\n';
-  code += 'var json_content = \'{"order":<>, "action":"MOVE", "content":"BACKWARD"}\'.replace(/<>/g, actionID);\n';
-  code += "var url = 'https://temi-cmd.firebaseio.com/ActionList/action_' + actionID + '.json';\n";
-  code += "speak_req.open('PUT', url, true);\n";
-  code += "speak_req.setRequestHeader('Content-Type', 'application/json');\n";
-  code += 'speak_req.send(JSON.stringify(JSON.parse(json_content)));\n';
-  code += 'actionID += 1;\n\n\n';
+  var content = '\'{"order":<>, "action":"MOVE", "content":"BACKWARD"}\'.replace(/<>/g, actionID)\n'
+  var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
+  code += 'actionID += 1;\n\n';
   return code;
 }
 
 Blockly.JavaScript['robot_action_move_left'] = function (block) {
-  var code = "";
-  code += 'var speak_req = new XMLHttpRequest();\n';
-  code += 'var json_content = \'{"order":<>, "action":"MOVE", "content":"LEFT"}\'.replace(/<>/g, actionID);\n';
-  code += "var url = 'https://temi-cmd.firebaseio.com/ActionList/action_' + actionID + '.json';\n";
-  code += "speak_req.open('PUT', url, true);\n";
-  code += "speak_req.setRequestHeader('Content-Type', 'application/json');\n";
-  code += 'speak_req.send(JSON.stringify(JSON.parse(json_content)));\n';
-  code += 'actionID += 1;\n\n\n';
+  var content = '\'{"order":<>, "action":"MOVE", "content":"LEFT"}\'.replace(/<>/g, actionID)\n'
+  var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
+  code += 'actionID += 1;\n\n';
   return code;
 }
 
 
 Blockly.JavaScript['robot_action_move_right'] = function (block) {
-  var code = "";
-  code += 'var speak_req = new XMLHttpRequest();\n';
-  code += 'var json_content = \'{"order":<>, "action":"MOVE", "content":"RIGHT"}\'.replace(/<>/g, actionID);\n';
-  code += "var url = 'https://temi-cmd.firebaseio.com/ActionList/action_' + actionID + '.json';\n";
-  code += "speak_req.open('PUT', url, true);\n";
-  code += "speak_req.setRequestHeader('Content-Type', 'application/json');\n";
-  code += 'speak_req.send(JSON.stringify(JSON.parse(json_content)));\n';
-  code += 'actionID += 1;\n\n\n';
+  var content = '\'{"order":<>, "action":"MOVE", "content":"RIGHT"}\'.replace(/<>/g, actionID)\n'
+  var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
+  code += 'actionID += 1;\n\n';
   return code;
 }
 
