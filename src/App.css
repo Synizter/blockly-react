@@ -6,15 +6,28 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 5vh;
+  /* min-height: 500px;
+  height: auto !important;
+  height: 100%;
+  margin:200 auto -21em; */
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  padding-top: 160px;
+  height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(1px + 2vmin);
   color: white;
+
 }
 
+.App-body {
+  margin-top: 200px;
+  background-color: #ffffff;
+  color: white;
+}
 .App-link {
   color: #61dafb;
 }

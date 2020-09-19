@@ -21,6 +21,9 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
+
+ 
+
 import React from 'react';
 import './App.css';
 
@@ -32,6 +35,9 @@ import BlocklyJS from 'blockly/javascript';
 
 import './blocks/customblocks';
 import './generator/generator';
+
+import RobotYoutubeLive from './RobotYoutubeLive'
+
 
 class App extends React.Component {
   constructor(props) {
@@ -96,10 +102,14 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
           <h1> Virach Labo Blockly </h1>
+          <RobotYoutubeLive videoId="QpaL5bVmD5A"/>
           <button onClick={this.generateCode}>Convert</button>
-          <BlocklyComponent
+         
+        </header>
+
+        <body class="App-body">
+        <BlocklyComponent
             ref={this.simpleWorkspace}
             readOnly={false}
             trashcan={true}
@@ -131,7 +141,7 @@ class App extends React.Component {
             <Block type="dm_robot_callstaff"></Block>
             <Block type="dm_robot_show_dir"></Block> */}
           </BlocklyComponent>
-        </header>
+        </body>
       </div>
     );
   }
