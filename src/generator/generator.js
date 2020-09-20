@@ -58,7 +58,7 @@ Blockly.JavaScript['robot_action_speak'] = function(block) {
 
   var content = '\'{"order":<>, "action":"SPEAK", "lang":"{}", "content":"><"}\'.replace(/<>/g, actionID)\n'.replace(/></g, tts.replace(/'/g, ''));
   content = content.replace(/{}/g, lang.replace(/'/g, ''));
-  var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
+  var code = 'SendCmd(\'PUT\', url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
   code += 'actionID += 1;\n\n';
 
 
@@ -67,21 +67,21 @@ Blockly.JavaScript['robot_action_speak'] = function(block) {
 
 Blockly.JavaScript['robot_action_move_forward'] = function (block) {
   var content = '\'{"order":<>, "action":"MOVE", "content":"FORWARD"}\'.replace(/<>/g, actionID)\n'
-  var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
+  var code = 'SendCmd(\'PUT\', url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
   code += 'actionID += 1;\n\n';
   return code;
 }
 
 Blockly.JavaScript['robot_action_move_backward'] = function (block) {
   var content = '\'{"order":<>, "action":"MOVE", "content":"BACKWARD"}\'.replace(/<>/g, actionID)\n'
-  var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
+  var code = 'SendCmd(\'PUT\', url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
   code += 'actionID += 1;\n\n';
   return code;
 }
 
 Blockly.JavaScript['robot_action_move_left'] = function (block) {
   var content = '\'{"order":<>, "action":"MOVE", "content":"LEFT"}\'.replace(/<>/g, actionID)\n'
-  var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
+  var code = 'SendCmd(\'PUT\', url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
   code += 'actionID += 1;\n\n';
   return code;
 }
@@ -89,10 +89,23 @@ Blockly.JavaScript['robot_action_move_left'] = function (block) {
 
 Blockly.JavaScript['robot_action_move_right'] = function (block) {
   var content = '\'{"order":<>, "action":"MOVE", "content":"RIGHT"}\'.replace(/<>/g, actionID)\n'
-  var code = 'SendCmd(url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
+  var code = 'SendCmd(\'PUT\', url+"/ActionList/action_<>".replace(/<>/g, actionID) + ".json", {})\n'.replace(/{}/g, content);
   code += 'actionID += 1;\n\n';
   return code;
 }
 
+Blockly.JavaScript['robot_action_save_location'] = function(block) {
+  var location = Blockly.JavaScript.valueToCode(block, 'LOCATION', Blockly.JavaScript.ORDER_ATOMIC);
+
+  var content = '\'{"L><":"<>"}\'.replace(/></g, locationID)'.replace(/<>/g, location.replace(/\'/g, ""));
+  var code = 'SendCmd(\'PATCH\', url+"/ProgramInfo/SavedLocation.json", {})\n'.replace(/{}/g, content);
+  code += 'locationID += 1;\n\n';
+
+  return code;
+};
 
 
+// curl --header "Content-Type: application/json" \
+//   --request PATCH \
+//   --data '{"L2":"test2"}' \
+//   https://temi-cmd.firebaseio.com/ProgramInfo/SavedLocation.json

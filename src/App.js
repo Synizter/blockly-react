@@ -48,12 +48,13 @@ class App extends React.Component {
   generateCode = () => {
     var code = '';
     code += 'var actionID = 1;\n';
+    code += 'var locationID = 1\n' // Location ID
     code += 'var url = \'https://temi-cmd.firebaseio.com/\'\n';
 
-    code += 'function makeRequest(url,json_content) {\n\
+    code += 'function makeRequest(method, url,json_content) {\n\
       return new Promise(function (resolve, reject) {\n\
           let xhr = new XMLHttpRequest();\n\
-          xhr.open(\'PUT\', url,false);\n\
+          xhr.open(method, url,false);\n\
           xhr.setRequestHeader(\'Content-Type\', \'application/json\');\n\
           xhr.onload = function () {\n\
               if (this.status >= 200 && this.status < 300) {\n\
@@ -74,15 +75,15 @@ class App extends React.Component {
           xhr.send(JSON.stringify(JSON.parse(json_content)));\n\
       });\n\
   }\n';
-  code += 'async function SendCmd(url, content) {\n\
-    var result = await makeRequest(url, content)\n\
+  code += 'async function SendCmd(method ,url, content) {\n\
+    var result = await makeRequest(method, url, content)\n\
     console.log(result);\n\
   }\n\n';
   
-  code += 'SendCmd(url + "ProgramInfo/status.json", \'{\"status\":\"UPLOADING\"}\')\n';
+  code += 'SendCmd(\'PUT\', url + "ProgramInfo/status.json", \'{\"status\":\"UPLOADING\"}\')\n';
   var codeFromBlock = BlocklyJS.workspaceToCode(this.simpleWorkspace.current.workspace);
   code += codeFromBlock;
-  code += 'SendCmd(url + "ProgramInfo/status.json", \'{\"status\":\"DONE\"}\')\n';
+  code += 'SendCmd(\'PUT\' ,url + "ProgramInfo/status.json", \'{\"status\":\"DONE\"}\')\n';
 
     // code += 'var speak_req = new XMLHttpRequest();\n';
     // code += 'var json_content = \'{"status":"DONE"}\';\n';
@@ -105,7 +106,6 @@ class App extends React.Component {
           <h1> Virach Labo Blockly </h1>
           <RobotYoutubeLive videoId="QpaL5bVmD5A"/>
           <button onClick={this.generateCode}>Convert</button>
-         
         </header>
 
         <body class="App-body">
@@ -126,6 +126,7 @@ class App extends React.Component {
             <Block type="robot_action_move_backward"></Block>
             <Block type="robot_action_move_left"></Block>
             <Block type="robot_action_move_right"></Block>
+            <Block type="robot_action_save_location"></Block>
             <Block type="controls_repeat_ext">
               <Value name="TIMES">
                 <Shadow type="math_number">

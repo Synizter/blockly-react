@@ -29,6 +29,7 @@ import * as Blockly from 'blockly/core';
 // Since we're using json to initialize the field, we'll need to import it.
 import '../fields/BlocklyReactField';
 import '../fields/DateField';
+import { Block } from '../Blockly';
 
 var testReactField = {
   type: 'test_react_field',
@@ -175,7 +176,29 @@ Blockly.Blocks['robot_action_speak'] = {
 };
 
 
-
+var RobotSaveLocation = {
+  "type": "block_type",
+  "message0": "Temi saves location %1 (name location)",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "LOCATION",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "",
+  "helpUrl": ""
+}
+Blockly.Blocks['robot_action_save_location'] = {
+  init: function() {
+    this.jsonInit(RobotSaveLocation);
+    this.setStyle('loop_blocks');
+  },
+}
 
 
 
