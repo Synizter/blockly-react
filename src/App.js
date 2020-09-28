@@ -26,9 +26,10 @@ import './App.css';
 
 import logo from './logo.svg';
 
-import BlocklyComponent, { Block, Value, Field, Shadow } from './Blockly';
+import BlocklyComponent, { Block, Value, Field, Shadow, Category } from './Blockly';
 
 import BlocklyJS from 'blockly/javascript';
+import BlocklyPython from 'blockly/python'
 
 import './blocks/customblocks';
 import './generator/generator';
@@ -40,53 +41,71 @@ class App extends React.Component {
   }
 
   generateCode = () => {
-    var code = '';
-    code += 'var actionID = 0;\n';
-    var codeFromBlock = BlocklyJS.workspaceToCode(this.simpleWorkspace.current.workspace);
+    var code = '# start of python program\n\n';
+    //Extract blockly to python, in case of Javascript, use BlocklyJS instead 
+    var codeFromBlock = BlocklyPython.workspaceToCode(this.simpleWorkspace.current.workspace);
     code += codeFromBlock;
+    code += '\n\n# end of pythong program\n';
     console.log(code);
-    try {
-      eval(code);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
-          <h1> Virach Labo Blockly </h1>
-          <button onClick={this.generateCode}>Convert</button>
-          <BlocklyComponent
-            ref={this.simpleWorkspace}
-            readOnly={false}
-            trashcan={true}
-            media={'media/'}
-            move={{
-              scrollbars: true,
-              drag: true,
-              wheel: true,
-            }}
-          >
-            <Block type="robot_action_speak"></Block>
-            <Block type="text"></Block>
-            <Block type="robot_action_move_forward"></Block>
-            {/* <Block type="robot_action_move_backward"></Block>
-            <Block type="robot_action_move_left"></Block>
-            <Block type="robot_action_move_right"></Block> */}
-            <Block type="controls_repeat_ext">
-              <Value name="TIMES">
-                <Shadow type="math_number">
-                  <Field name="NUM">10</Field>
-                </Shadow>
-              </Value>
-            </Block>
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <button onClick={this.generateCode}>Convert to Python</button>
+
+      </header>
+      <div className="Workspace">
+      <body>
+        <BlocklyComponent ref={this.simpleWorkspace}
+          readOnly={false} trashcan={true} media={'media/'}
+          move={{
+            scrollbars: true,
+            drag: true,
+            wheel: true
+          }}>
+
+            <Category name="Logic" colour="210">
+              <Block type="controls_if"></Block>
+              <Block type="logic_compare"></Block>
+              <Block type="logic_operation"></Block>
+              <Block type="logic_negate"></Block>
+              <Block type="logic_boolean"></Block>
+            </Category>
+            <Category name="Loops" colour="120">
+              <Block type="controls_repeat_ext">
+                <Value name="TIMES">
+                  <Block type="math_number">
+                    <Field name="NUM">10</Field>
+                  </Block>
+                    </Value></Block>
+              <Block type="controls_whileUntil"></Block>
+            </Category>
+            <Category name="Text" colour="20">
+              <Block type="text"></Block>
+              <Block type="text_length"></Block>
+              <Block type="text_print"></Block>
+            </Category>
+            <Category name="Math" colour="230">
+              <Block type="math_number"></Block>
+              <Block type="math_arithmetic"></Block>
+              <Block type="math_single"></Block>
+            </Category>
+
+            <Category name="Tokenize" colour="30">
+              <Block type="ptnlp_word_tokenize_import"></Block>
+              <Block type="ptnlp_tokenize_word"></Block>
+              <Block type="text"></Block>
+            </Category>
+
           </BlocklyComponent>
-        </header>
+      </body>
       </div>
-    );
+      </div>
+      
+      );
   }
 }
 

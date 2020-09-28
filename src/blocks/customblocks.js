@@ -72,89 +72,67 @@ Blockly.Blocks['test_react_date_field'] = {
   },
 };
 
-var RobotActionForward = {
-  type: 'block_type',
-  message0: 'Temi moves forward',
-  previousStatement: null,
-  nextStatement: null,
-  colour: 230,
-  tooltip: '',
-  helpUrl: '',
-};
-Blockly.Blocks['robot_action_move_forward'] = {
-  init: function () {
-    this.jsonInit(RobotActionForward);
+var PTNLPImportTokenize = {
+  "type": "ptnlp_word_tokenize_import",
+  "message0": "Use word tokenize of pythainlp",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "",
+  "helpUrl": ""
+}
+Blockly.Blocks['ptnlp_word_tokenize_import'] = {
+  init: function() {
+    this.jsonInit(PTNLPImportTokenize);
     this.setStyle('loop_blocks');
-  },
-};
+  }
+}
 
-var RobotActionBackward = {
-  type: 'block_type',
-  message0: 'Temi moves backward',
-  previousStatement: null,
-  nextStatement: null,
-  colour: 230,
-  tooltip: '',
-  helpUrl: '',
-};
-Blockly.Blocks['robot_action_move_backward'] = {
-  init: function () {
-    this.jsonInit(RobotActionBackward);
-    this.setStyle('loop_blocks');
-  },
-};
-
-var RobotActionLeft = {
-  type: 'block_type',
-  message0: 'Temi moves left',
-  previousStatement: null,
-  nextStatement: null,
-  colour: 230,
-  tooltip: '',
-  helpUrl: '',
-};
-Blockly.Blocks['robot_action_move_left'] = {
-  init: function () {
-    this.jsonInit(RobotActionLeft);
-    this.setStyle('loop_blocks');
-  },
-};
-
-var RobotActionRight = {
-  type: 'block_type',
-  message0: 'Temi moves right',
-  previousStatement: null,
-  nextStatement: null,
-  colour: 230,
-  tooltip: '',
-  helpUrl: '',
-};
-Blockly.Blocks['robot_action_move_right'] = {
-  init: function () {
-    this.jsonInit(RobotActionRight);
-    this.setStyle('loop_blocks');
-  },
-};
-
-var RobotActionSpeak = {
-  type: 'block_type',
-  message0: 'Temi speaks %1',
-  args0: [
+var PTNLPTokenizeWord = {
+  "type": "ptnlp_tokenize_word",
+  "message0": "Tokenize : %1 with engine %2",
+  "args0": [
     {
-      type: 'input_value',
-      name: 'TEXT_TO_SPEACH',
-      check: 'String',
+      "type": "input_value",
+      "name": "TEXT_INPUT",
+      "check": "String"
     },
+    {
+      "type": "field_dropdown",
+      "name": "ENGINE",
+      "options": [
+        [
+          "ICU",
+          "icu"
+        ],
+        [
+          "DICTIONARY",
+          "dict"
+        ],
+        [
+          "PYLEXTO",
+          "pylexto"
+        ],
+        [
+          "MM",
+          "mm"
+        ],
+        [
+          "NEW MM",
+          "newmm"
+        ]
+      ]
+    }
   ],
-  previousStatement: null,
-  nextStatement: null,
-  colour: 230,
-  tooltip: '',
-  helpUrl: '',
-};
-Blockly.Blocks['robot_action_speak'] = {
-  init: function () {
-    this.jsonInit(RobotActionSpeak);
+  "inputsInline": true,
+  "output":null,
+  "colour": 230,
+  "tooltip": "",
+  "helpUrl": "https://pythainlp.readthedocs.io/en/latest/pythainlp-1-4-thai/"
+}
+Blockly.Blocks['ptnlp_tokenize_word'] = {
+  init: function() {
+    this.jsonInit(PTNLPTokenizeWord);
     this.setStyle('loop_blocks');
-  },
-};
+  }
+}

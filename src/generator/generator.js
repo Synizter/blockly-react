@@ -26,6 +26,7 @@
 
 import * as Blockly from 'blockly/core';
 import 'blockly/javascript';
+import 'blockly/python';
 
 Blockly.JavaScript['test_react_field'] = function (block) {
   return "console.log('custom block');\n";
@@ -35,31 +36,20 @@ Blockly.JavaScript['test_react_date_field'] = function (block) {
   return 'console.log(' + block.getField('DATE').getText() + ');\n';
 };
 
-Blockly.JavaScript['robot_action_speak'] = function (block) {
-  var code = '';
-  var tts = Blockly.JavaScript.valueToCode(
-    block,
-    'TEXT_TO_SPEACH',
-    Blockly.JavaScript.ORDER_ATOMIC
-  );
-  code += 'var speak_req = new XMLHttpRequest();\n';
-  code += 'var json_content = \'{"SPEAK":"' + tts.replace(/'/g, '') + '"}\';\n';
-  code += "var url = 'https://temi-cmd.firebaseio.com/ActionList/action_' + actionID + '.json';\n";
-  code += "speak_req.open('PUT', url, true);\n";
-  code += "speak_req.setRequestHeader('Content-Type', 'application/json');\n";
-  code += 'speak_req.send(JSON.stringify(JSON.parse(json_content)));\n';
-  code += 'actionID += 1;\n\n\n';
+Blockly.Python['ptnlp_word_tokenize_import'] = function(block) {
+  var code = 'from pythainlp.tokenize import word_tokenize\n';
   return code;
 };
 
-Blockly.JavaScript['robot_action_move_forward'] = function (block) {
-  var code = "";
-  code += 'var speak_req = new XMLHttpRequest();\n';
-  code += 'var json_content = \'{"MOVE":"FORWARD"}\';\n';
-  code += "var url = 'https://temi-cmd.firebaseio.com/ActionList/action_' + actionID + '.json';\n";
-  code += "speak_req.open('PUT', url, true);\n";
-  code += "speak_req.setRequestHeader('Content-Type', 'application/json');\n";
-  code += 'speak_req.send(JSON.stringify(JSON.parse(json_content)));\n';
-  code += 'actionID += 1;\n\n\n';
-  return code;
-}
+Blockly.Python['ptnlp_tokenize_word'] = function(block) {
+  var value_text_input = Blockly.Python.valueToCode(block, 'TEXT_INPUT', Blockly.Python.ORDER_ATOMIC);
+  var dropdown_engine = block.getFieldValue('ENGINE');
+  var mapObj = {
+    TEXT: value_text_input,
+    ENGINES: dropdown_engine
+  };
+  var code = 'word_tokenize(TEXT, engine=\'ENGINES\')'.replace(/TEXT|ENGINES/gi, function(matched) {
+    return mapObj[matched];
+  });
+  return [code, Blockly.Python.ORDER_NONE];
+};
