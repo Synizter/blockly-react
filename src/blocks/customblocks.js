@@ -72,67 +72,106 @@ Blockly.Blocks['test_react_date_field'] = {
   },
 };
 
-var PTNLPImportTokenize = {
-  "type": "ptnlp_word_tokenize_import",
-  "message0": "Use word tokenize of pythainlp",
+// var PTNLPImportTokenize = {
+//   "type": "ptnlp_word_tokenize_import",
+//   "message0": "Use word tokenize of pythainlp",
+//   "previousStatement": null,
+//   "nextStatement": null,
+//   "colour": 230,
+//   "tooltip": "",
+//   "helpUrl": ""
+// }
+// Blockly.Blocks['ptnlp_word_tokenize_import'] = {
+//   init: function() {
+//     this.jsonInit(PTNLPImportTokenize);
+//     this.setStyle('loop_blocks');
+//   }
+// }
+
+// var PTNLPTokenizeWord = {
+//   "type": "ptnlp_tokenize_word",
+//   "message0": "Tokenize : %1 with engine %2",
+//   "args0": [
+//     {
+//       "type": "input_value",
+//       "name": "TEXT_INPUT",
+//       "check": "String"
+//     },
+//     {
+//       "type": "field_dropdown",
+//       "name": "ENGINE",
+//       "options": [
+//         [
+//           "ICU",
+//           "icu"
+//         ],
+//         [
+//           "DICTIONARY",
+//           "dict"
+//         ],
+//         [
+//           "PYLEXTO",
+//           "pylexto"
+//         ],
+//         [
+//           "MM",
+//           "mm"
+//         ],
+//         [
+//           "NEW MM",
+//           "newmm"
+//         ]
+//       ]
+//     }
+//   ],
+//   "inputsInline": true,
+//   "output":null,
+//   "colour": 230,
+//   "tooltip": "",
+//   "helpUrl": "https://pythainlp.readthedocs.io/en/latest/pythainlp-1-4-thai/"
+// }
+// Blockly.Blocks['ptnlp_tokenize_word'] = {
+//   init: function() {
+//     this.jsonInit(PTNLPTokenizeWord);
+//     this.setStyle('loop_blocks');
+//   }
+// }
+
+var MeCabImport = {
+  "type": "ws_import_mecab",
+  "message0": "Use MeCab word segmentation",
   "previousStatement": null,
   "nextStatement": null,
   "colour": 230,
   "tooltip": "",
   "helpUrl": ""
-}
-Blockly.Blocks['ptnlp_word_tokenize_import'] = {
-  init: function() {
-    this.jsonInit(PTNLPImportTokenize);
+};
+Blockly.Blocks['ws_import_mecab'] = {
+  init: function () {
+    this.jsonInit(MeCabImport);
     this.setStyle('loop_blocks');
-  }
-}
+  },
+};
 
-var PTNLPTokenizeWord = {
-  "type": "ptnlp_tokenize_word",
-  "message0": "Tokenize : %1 with engine %2",
+var MeCabOwakatiTagger = {
+  "type": "ws_tagger",
+  "message0": "text to be segmented: %1",
   "args0": [
     {
       "type": "input_value",
-      "name": "TEXT_INPUT",
+      "name": "INPUT_TEXT",
       "check": "String"
-    },
-    {
-      "type": "field_dropdown",
-      "name": "ENGINE",
-      "options": [
-        [
-          "ICU",
-          "icu"
-        ],
-        [
-          "DICTIONARY",
-          "dict"
-        ],
-        [
-          "PYLEXTO",
-          "pylexto"
-        ],
-        [
-          "MM",
-          "mm"
-        ],
-        [
-          "NEW MM",
-          "newmm"
-        ]
-      ]
     }
   ],
   "inputsInline": true,
-  "output":null,
+  "output": null,
   "colour": 230,
   "tooltip": "",
-  "helpUrl": "https://pythainlp.readthedocs.io/en/latest/pythainlp-1-4-thai/"
+  "helpUrl": ""
 }
-Blockly.Blocks['ptnlp_tokenize_word'] = {
-  init: function() {
-    this.jsonInit(PTNLPTokenizeWord);
+Blockly.Blocks['ws_tagger'] = {
+  init: function () {
+    this.jsonInit(MeCabOwakatiTagger);
     this.setStyle('loop_blocks');
-  }
-}
+  },
+};

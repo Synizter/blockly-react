@@ -36,20 +36,32 @@ Blockly.JavaScript['test_react_date_field'] = function (block) {
   return 'console.log(' + block.getField('DATE').getText() + ');\n';
 };
 
-Blockly.Python['ptnlp_word_tokenize_import'] = function(block) {
-  var code = 'from pythainlp.tokenize import word_tokenize\n';
+// Blockly.Python['ptnlp_word_tokenize_import'] = function(block) {
+//   var code = 'from pythainlp.tokenize import word_tokenize\n';
+//   return code;
+// };
+
+// Blockly.Python['ptnlp_tokenize_word'] = function(block) {
+//   var value_text_input = Blockly.Python.valueToCode(block, 'TEXT_INPUT', Blockly.Python.ORDER_ATOMIC);
+//   var dropdown_engine = block.getFieldValue('ENGINE');
+//   var mapObj = {
+//     TEXT: value_text_input,
+//     ENGINES: dropdown_engine
+//   };
+//   var code = 'word_tokenize(TEXT, engine=\'ENGINES\')'.replace(/TEXT|ENGINES/gi, function(matched) {
+//     return mapObj[matched];
+//   });
+//   return [code, Blockly.Python.ORDER_NONE];
+// };
+
+Blockly.Python['ws_import_mecab'] = function(block) {
+  var code = 'import MeCab\n';
+  code += 'wakati = MeCab.Tagger("-Owakati")\n';
   return code;
 };
 
-Blockly.Python['ptnlp_tokenize_word'] = function(block) {
-  var value_text_input = Blockly.Python.valueToCode(block, 'TEXT_INPUT', Blockly.Python.ORDER_ATOMIC);
-  var dropdown_engine = block.getFieldValue('ENGINE');
-  var mapObj = {
-    TEXT: value_text_input,
-    ENGINES: dropdown_engine
-  };
-  var code = 'word_tokenize(TEXT, engine=\'ENGINES\')'.replace(/TEXT|ENGINES/gi, function(matched) {
-    return mapObj[matched];
-  });
+Blockly.Python['ws_tagger'] = function(block) {
+  var value_input_text = Blockly.Python.valueToCode(block, 'INPUT_TEXT', Blockly.Python.ORDER_ATOMIC);
+  var code = 'wakati.parse("TEXT").split()'.replace(/TEXT/gi,value_input_text.replace(/\'/g, ''));
   return [code, Blockly.Python.ORDER_NONE];
 };

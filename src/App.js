@@ -33,6 +33,7 @@ import BlocklyPython from 'blockly/python'
 
 import './blocks/customblocks';
 import './generator/generator';
+import Axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -41,12 +42,25 @@ class App extends React.Component {
   }
 
   generateCode = () => {
-    var code = '# start of python program\n\n';
-    //Extract blockly to python, in case of Javascript, use BlocklyJS instead 
-    var codeFromBlock = BlocklyPython.workspaceToCode(this.simpleWorkspace.current.workspace);
-    code += codeFromBlock;
-    code += '\n\n# end of pythong program\n';
-    console.log(code);
+      var codeFromBlock = BlocklyPython.workspaceToCode(this.simpleWorkspace.current.workspace);
+      console.log('---------- PYTHON CODE ------------')
+      console.log(codeFromBlock);
+
+      Axios('http://babyai.org:5000/execute',{
+      method: 'POST',
+      mode: 'no-cors',
+      data : codeFromBlock,
+      // data: 'print("Shark-きさめ")\r\nprint("Wow-ビックリ！")\r\n',
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      "Content-Type": "text/plain",
+      },
+      withCredentials: true,
+      credentials: 'same-origin',
+      }).then(reponse => {
+        console.log('\n\n---------- OUTPUT------------')
+        console.log(reponse.data)
+      });
   };
 
   render() {
@@ -94,13 +108,15 @@ class App extends React.Component {
               <Block type="math_single"></Block>
             </Category>
 
-            <Category name="Tokenize" colour="30">
-              <Block type="ptnlp_word_tokenize_import"></Block>
-              <Block type="ptnlp_tokenize_word"></Block>
+            <Category name="MeCab Japanese Word Segmentation" colour="30">
+              <Block type="ws_import_mecab"></Block>
+              <Block type="ws_tagger"></Block> 
               <Block type="text"></Block>
+              <Block type="text_print"></Block>
             </Category>
 
           </BlocklyComponent>
+          
       </body>
       </div>
       </div>
