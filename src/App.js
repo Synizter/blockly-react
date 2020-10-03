@@ -1,175 +1,144 @@
-/**
- * @license
- *
- * Copyright 2019 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import React, { useRef, useState } from "react";
+import BlocklyComponent, { Block, Value, Field, Category } from "./Blockly";
+import BlocklyPython from "blockly/python";
+import { babyAiService } from "./services/babyAiService";
+import { CodeBlock, dracula } from "react-code-blocks";
+import "./blocks/customblocks";
+import "./generator/generator";
+import "./App.css";
 
-/**
- * @fileoverview Main React component that includes the Blockly component.
- * @author samelh@google.com (Sam El-Husseini)
- */
+const NavbarComponent = ({ generateCode, toggle }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        padding: "10px",
+        border: "1px solid #d2d2d2",
+      }}
+    >
+      <div style={{ flex: 1 }}>
+        <h3
+          style={{
+            padding: 0,
+            margin: 0,
+          }}
+        >
+          Blockly
+        </h3>
+      </div>
+      <div style={{}}>
+        <button onClick={toggle} className="previewBtn">
+          Preview Code
+        </button>
+        <button onClick={generateCode} className="compileBtn">
+          Compile Code
+        </button>
+      </div>
+    </div>
+  );
+};
 
-import React from 'react';
-import './App.css';
+const WorkspaceComponent = ({ initWorkspaceRef }) => {
+  return (
+    <BlocklyComponent
+      ref={(instanceRef) => {
+        initWorkspaceRef(instanceRef);
+      }}
+      readOnly={false}
+      trashcan={true}
+      media={"media/"}
+      move={{ scrollbars: true, drag: true, wheel: true }}
+    >
+      <Category name="Logic" colour="210">
+        <Block type="controls_if"></Block>
+        <Block type="logic_compare"></Block>
+        <Block type="logic_operation"></Block>
+        <Block type="logic_negate"></Block>
+        <Block type="logic_boolean"></Block>
+      </Category>
+      <Category name="Loops" colour="120">
+        <Block type="controls_repeat_ext">
+          <Value name="TIMES">
+            <Block type="math_number">
+              <Field name="NUM">10</Field>
+            </Block>
+          </Value>
+        </Block>
+        <Block type="controls_whileUntil"></Block>
+      </Category>
+      <Category name="Text" colour="20">
+        <Block type="text"></Block>
+        <Block type="text_length"></Block>
+        <Block type="text_print"></Block>
+      </Category>
+      <Category name="Math" colour="230">
+        <Block type="math_number"></Block>
+        <Block type="math_arithmetic"></Block>
+        <Block type="math_single"></Block>
+      </Category>
 
-import logo from './logo.svg';
+      <Category name="MeCab Japanese Word Segmentation" colour="30">
+        <Block type="ws_import_mecab"></Block>
+        <Block type="ws_tagger"></Block>
+        <Block type="text"></Block>
+        <Block type="text_print"></Block>
+      </Category>
+    </BlocklyComponent>
+  );
+};
 
-import BlocklyComponent, { Block, Value, Field, Shadow, Category } from './Blockly';
+const App = () => {
+  const workspaceRef = useRef(null);
+  const [togglePreviewCode, setTogglePreviewCode] = useState(false);
+  const [executeCodeResponse, setExecuteCodeResponse] = useState(null);
+  const [codePreview, setCodePreview] = useState("");
 
-import BlocklyJS from 'blockly/javascript';
-import BlocklyPython from 'blockly/python'
+  const getCode = () => {
+    const codeFromBlock = BlocklyPython.workspaceToCode(
+      workspaceRef.current.workspace
+    );
 
-import './blocks/customblocks';
-import './generator/generator';
-import Axios from 'axios';
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.simpleWorkspace = React.createRef();
-  }
-
-  generateCode = () => {
-      var codeFromBlock = BlocklyPython.workspaceToCode(this.simpleWorkspace.current.workspace);
-      console.log('---------- PYTHON CODE ------------')
-      console.log(codeFromBlock);
-
-      Axios('http://babyai.org:5000/execute',{
-      method: 'POST',
-      mode: 'no-cors',
-      data : codeFromBlock,
-      // data: 'print("Shark-きさめ")\r\nprint("Wow-ビックリ！")\r\n',
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      "Content-Type": "text/plain",
-      },
-      withCredentials: true,
-      credentials: 'same-origin',
-      }).then(reponse => {
-        console.log('\n\n---------- OUTPUT------------')
-        console.log(reponse.data)
-      });
+    setCodePreview(codeFromBlock);
+    return codeFromBlock;
   };
 
-  render() {
-    return (
-      <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <button onClick={this.generateCode}>Convert to Python</button>
+  const generateCode = async () => {
+    const codeFromBlock = getCode();
+    const response = await babyAiService(codeFromBlock);
+    setExecuteCodeResponse(response.data);
+  };
 
-      </header>
-      <div className="Workspace">
-      <body>
-        <BlocklyComponent ref={this.simpleWorkspace}
-          readOnly={false} trashcan={true} media={'media/'}
-          move={{
-            scrollbars: true,
-            drag: true,
-            wheel: true
-          }}>
+  const onHandlerTogglePreviewCode = () => {
+    const toggle = togglePreviewCode ? false : true;
+    getCode();
+    setTogglePreviewCode(toggle);
+  };
 
-            <Category name="Logic" colour="210">
-              <Block type="controls_if"></Block>
-              <Block type="logic_compare"></Block>
-              <Block type="logic_operation"></Block>
-              <Block type="logic_negate"></Block>
-              <Block type="logic_boolean"></Block>
-            </Category>
-            <Category name="Loops" colour="120">
-              <Block type="controls_repeat_ext">
-                <Value name="TIMES">
-                  <Block type="math_number">
-                    <Field name="NUM">10</Field>
-                  </Block>
-                    </Value></Block>
-              <Block type="controls_whileUntil"></Block>
-            </Category>
-            <Category name="Text" colour="20">
-              <Block type="text"></Block>
-              <Block type="text_length"></Block>
-              <Block type="text_print"></Block>
-            </Category>
-            <Category name="Math" colour="230">
-              <Block type="math_number"></Block>
-              <Block type="math_arithmetic"></Block>
-              <Block type="math_single"></Block>
-            </Category>
-
-            <Category name="MeCab Japanese Word Segmentation" colour="30">
-              <Block type="ws_import_mecab"></Block>
-              <Block type="ws_tagger"></Block> 
-              <Block type="text"></Block>
-              <Block type="text_print"></Block>
-            </Category>
-
-          </BlocklyComponent>
-          
-      </body>
+  return (
+    <>
+      <NavbarComponent toggle={onHandlerTogglePreviewCode} />
+      <div style={{ display: togglePreviewCode ? "initial" : "none" }}>
+        <div style={{ padding: "20px" }}>
+          <CodeBlock
+            text={codePreview}
+            language={"python"}
+            showLineNumbers={true}
+            theme={dracula}
+            codeBlock
+          />
+        </div>
       </div>
+      <div style={{ display: togglePreviewCode ? "none" : "initial" }}>
+        <WorkspaceComponent
+          initWorkspaceRef={(ref) => {
+            workspaceRef.current = ref;
+          }}
+        />
       </div>
-      
-      );
-  }
-}
+    </>
+  );
+};
 
 export default App;
-
-// <div className="App">
-// <header className="App-header">
-//   <img src={logo} className="App-logo" alt="logo" />
-//   <button onClick={this.generateCode}>Convert</button>
-//   <BlocklyComponent ref={this.simpleWorkspace}
-//   readOnly={false} trashcan={true} media={'media/'}
-//   move={{
-//     scrollbars: true,
-//     drag: true,
-//     wheel: true
-//   }}
-//   initialXml={`
-// <xml xmlns="http://www.w3.org/1999/xhtml">
-// <block type="controls_ifelse" x="0" y="0"></block>
-// </xml>
-// `}>
-//     <Block type="test_react_field" />
-//     <Block type="test_react_date_field" />
-//     <Block type="controls_ifelse" />
-//     <Block type="logic_compare" />
-//     <Block type="logic_operation" />
-//     <Block type="controls_repeat_ext">
-//       <Value name="TIMES">
-//         <Shadow type="math_number">
-//           <Field name="NUM">10</Field>
-//         </Shadow>
-//       </Value>
-//     </Block>
-//     <Block type="logic_operation" />
-//     <Block type="logic_negate" />
-//     <Block type="logic_boolean" />
-//     <Block type="logic_null" disabled="true" />
-//     <Block type="logic_ternary" />
-//     <Block type="text_charAt">
-//       <Value name="VALUE">
-//         <Block type="variables_get">
-//           <Field name="VAR">text</Field>
-//         </Block>
-//       </Value>
-//     </Block>
-//   </BlocklyComponent>
-// </header>
-// </div>
-// );
-// }
-// }

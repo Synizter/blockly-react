@@ -6,6 +6,7 @@
     "axios": "^0.20.0",
     "blockly": "^3.20200123.1",
     "react": "^16.13.1",
+    "react-code-blocks": "0.0.8",
     "react-datepicker": "^2.14.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.3"
