@@ -7,6 +7,24 @@ import "./blocks/customblocks";
 import "./generator/generator";
 import "./App.css";
 
+const ConsoleComponent = ({ data = [] }) => {
+  const items = data.map((val, index) => {
+    return (
+      <div className="itemsResult" key={index}>
+        {val}
+      </div>
+    );
+  });
+  return (
+    <>
+      <p style={{ padding: "0 5px" }}>
+        <b>Console</b>
+      </p>
+      <div className="wrapperItemResult">{items}</div>
+    </>
+  );
+};
+
 const NavbarComponent = ({ generateCode, toggle }) => {
   return (
     <div
@@ -15,7 +33,7 @@ const NavbarComponent = ({ generateCode, toggle }) => {
         flexDirection: "row",
         alignItems: "center",
         padding: "10px",
-        border: "1px solid #d2d2d2",
+        borderBottom: "1px solid #d2d2d2",
       }}
     >
       <div style={{ flex: 1 }}>
@@ -92,11 +110,11 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
 const App = () => {
   const workspaceRef = useRef(null);
   const [togglePreviewCode, setTogglePreviewCode] = useState(false);
-  const [executeCodeResponse, setExecuteCodeResponse] = useState(null);
+  const [executeCodeResponse, setExecuteCodeResponse] = useState([]);
   const [codePreview, setCodePreview] = useState("");
 
   const getCode = () => {
-    const codeFromBlock = BlocklyPython.workspaceToCode(
+    let codeFromBlock = BlocklyPython.workspaceToCode(
       workspaceRef.current.workspace
     );
 
@@ -107,7 +125,7 @@ const App = () => {
   const generateCode = async () => {
     const codeFromBlock = getCode();
     const response = await babyAiService(codeFromBlock);
-    setExecuteCodeResponse(response.data);
+    setExecuteCodeResponse(response.data.split("\n"));
   };
 
   const onHandlerTogglePreviewCode = () => {
@@ -118,11 +136,18 @@ const App = () => {
 
   return (
     <>
-      <NavbarComponent toggle={onHandlerTogglePreviewCode} />
+      <NavbarComponent
+        generateCode={generateCode}
+        toggle={onHandlerTogglePreviewCode}
+      />
       <div style={{ display: togglePreviewCode ? "initial" : "none" }}>
         <div style={{ padding: "20px" }}>
           <CodeBlock
-            text={codePreview}
+            text={
+              codePreview === ""
+                ? "🔥 #Let's Started 🔥 \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                : codePreview
+            }
             language={"python"}
             showLineNumbers={true}
             theme={dracula}
@@ -137,6 +162,7 @@ const App = () => {
           }}
         />
       </div>
+      <ConsoleComponent data={executeCodeResponse.map((val) => `> ${val}`)} />
     </>
   );
 };

@@ -47,7 +47,7 @@ class BlocklyComponent extends React.Component {
           ref={this.blocklyDiv}
           style={{
             width: "100%",
-            height: "100vh",
+            height: "70vh",
           }}
         />
         <xml
