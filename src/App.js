@@ -37,6 +37,15 @@ import './blocks/customblocks';
 import './generator/generator';
 
 import RobotYoutubeLive from './RobotYoutubeLive'
+import ReactTwitchEmbedVideo from "react-twitch-embed-video"
+
+//react router
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 
 class App extends React.Component {
@@ -80,10 +89,10 @@ class App extends React.Component {
     console.log(result);\n\
   }\n\n';
   
-  code += 'SendCmd(\'PUT\', url + "ProgramInfo/status.json", \'{\"status\":\"UPLOADING\"}\')\n';
+  code += 'SendCmd(\'PATCH\', url + "ProgramInfo.json", \'{\"uploaded_status\":\"UPLOADING\"}\')\n';
   var codeFromBlock = BlocklyJS.workspaceToCode(this.simpleWorkspace.current.workspace);
   code += codeFromBlock;
-  code += 'SendCmd(\'PUT\' ,url + "ProgramInfo/status.json", \'{\"status\":\"DONE\"}\')\n';
+  code += 'SendCmd(\'PATCH\' ,url + "ProgramInfo.json", \'{\"UPLOADED_STATUS\":\"DONE\"}\')\n';
 
     // code += 'var speak_req = new XMLHttpRequest();\n';
     // code += 'var json_content = \'{"status":"DONE"}\';\n';
@@ -104,11 +113,13 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
           <h1> Virach Labo Blockly </h1>
-          <RobotYoutubeLive videoId="QpaL5bVmD5A"/>
-          <button onClick={this.generateCode}>Convert</button>
+          {/* <RobotYoutubeLive videoId="wtKkjIbU5hg"/> */}
+          <ReactTwitchEmbedVideo channel="virachlabo" />
+          
         </header>
 
         <body class="App-body">
+        <button onClick={this.generateCode}>Convert</button>
         <BlocklyComponent
             ref={this.simpleWorkspace}
             readOnly={false}
@@ -127,6 +138,7 @@ class App extends React.Component {
             <Block type="robot_action_move_left"></Block>
             <Block type="robot_action_move_right"></Block>
             <Block type="robot_action_save_location"></Block>
+            <Block type="robot_action_goto"></Block>
             <Block type="controls_repeat_ext">
               <Value name="TIMES">
                 <Shadow type="math_number">
@@ -134,6 +146,7 @@ class App extends React.Component {
                 </Shadow>
               </Value>
             </Block>
+            <Block type="controls_ifelse"></Block>
             {/* DUMMY
             <Block type="controls_ifelse"></Block>
             <Block type="logic_compare" />
@@ -149,50 +162,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-// <div className="App">
-// <header className="App-header">
-//   <img src={logo} className="App-logo" alt="logo" />
-//   <button onClick={this.generateCode}>Convert</button>
-//   <BlocklyComponent ref={this.simpleWorkspace}
-//   readOnly={false} trashcan={true} media={'media/'}
-//   move={{
-//     scrollbars: true,
-//     drag: true,
-//     wheel: true
-//   }}
-//   initialXml={`
-// <xml xmlns="http://www.w3.org/1999/xhtml">
-// <block type="controls_ifelse" x="0" y="0"></block>
-// </xml>
-// `}>
-//     <Block type="test_react_field" />
-//     <Block type="test_react_date_field" />
-//     <Block type="controls_ifelse" />
-//     <Block type="logic_compare" />
-//     <Block type="logic_operation" />
-//     <Block type="controls_repeat_ext">
-//       <Value name="TIMES">
-//         <Shadow type="math_number">
-//           <Field name="NUM">10</Field>
-//         </Shadow>
-//       </Value>
-//     </Block>
-//     <Block type="logic_operation" />
-//     <Block type="logic_negate" />
-//     <Block type="logic_boolean" />
-//     <Block type="logic_null" disabled="true" />
-//     <Block type="logic_ternary" />
-//     <Block type="text_charAt">
-//       <Value name="VALUE">
-//         <Block type="variables_get">
-//           <Field name="VAR">text</Field>
-//         </Block>
-//       </Value>
-//     </Block>
-//   </BlocklyComponent>
-// </header>
-// </div>
-// );
-// }
-// }

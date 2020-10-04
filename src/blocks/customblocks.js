@@ -107,7 +107,7 @@ Blockly.Blocks['robot_action_move_backward'] = {
 
 var RobotActionLeft = {
   type: 'block_type',
-  message0: 'Temi moves left',
+  message0: 'Temi turns left',
   previousStatement: null,
   nextStatement: null,
   colour: 230,
@@ -123,7 +123,7 @@ Blockly.Blocks['robot_action_move_left'] = {
 
 var RobotActionRight = {
   type: 'block_type',
-  message0: 'Temi moves right',
+  message0: 'Temi turns right',
   previousStatement: null,
   nextStatement: null,
   colour: 230,
@@ -200,7 +200,31 @@ Blockly.Blocks['robot_action_save_location'] = {
   },
 }
 
+var RobotGotoLocation = {
+  "type": "block_type",
+  "message0": "Temi goes to %1",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "GOTO_LOCATION",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "",
+  "helpUrl": ""
+}
+Blockly.Blocks['robot_action_goto'] = {
+  init: function() {
+    this.jsonInit(RobotGotoLocation);
+    this.setStyle('loop_blocks');
+  },
+}
 
+RobotActionCall = 
 
 
 //DUMMY BLOCK
@@ -295,3 +319,25 @@ init: function () {
   this.setStyle('loop_blocks');
 },
 };
+
+var TestBlock = {
+  "type": "test_block",
+  "message0": "Put message here %1",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "text_input"
+    }
+  ],
+  "inputsInline": true,
+  "output": null,
+  "colour": 230,
+  "tooltip": "",
+  "helpUrl": ""
+}
+Blockly.Blocks['test_block'] = {
+  init: function () {
+    this.jsonInit(dmShowMapAndDirection);
+    this.setStyle('loop_blocks');
+  },
+  };
