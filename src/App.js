@@ -3,10 +3,13 @@ import BlocklyComponent, { Block, Value, Field, Category } from "./Blockly";
 import BlocklyPython from "blockly/python";
 import { babyAiService } from "./services/babyAiService";
 import { CodeBlock, dracula } from "react-code-blocks";
+import Blockly from 'blockly'
+
 import "./blocks/customblocks";
 import "./generator/generator";
 import "./App.css";
 
+//Container of result from server
 const ConsoleComponent = ({ data = [] }) => {
   const items = data.map((val, index) => {
     return (
@@ -18,14 +21,15 @@ const ConsoleComponent = ({ data = [] }) => {
   return (
     <>
       <p style={{ padding: "0 5px" }}>
-        <b>Console</b>
+        <b>Output Result</b>
       </p>
       <div className="wrapperItemResult">{items}</div>
     </>
   );
 };
 
-const NavbarComponent = ({ generateCode, toggle }) => {
+//Top bar componenet NOTE that save and load is in developed
+const NavbarComponent = ({ generateCode, toggle, save, load}) => {
   return (
     <div
       style={{
@@ -43,21 +47,29 @@ const NavbarComponent = ({ generateCode, toggle }) => {
             margin: 0,
           }}
         >
-          Blockly
+          Blockly Editor
         </h3>
       </div>
       <div style={{}}>
         <button onClick={toggle} className="previewBtn">
-          Preview Code
+          Preview
         </button>
         <button onClick={generateCode} className="compileBtn">
-          Compile Code
+          Execute
         </button>
+        {/* Wait for API Line to save and download xml file */}
+        {/* <button onClick={save} className="saveBtn">
+          Save
+        </button>
+        <button onClick={load} className="loadBtn">
+          Load
+        </button> */}
       </div>
     </div>
   );
 };
 
+//Blockly workspace html, you may add your defined block here
 const WorkspaceComponent = ({ initWorkspaceRef }) => {
   return (
     <BlocklyComponent
@@ -97,7 +109,8 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
         <Block type="math_single"></Block>
       </Category>
 
-      <Category name="MeCab Japanese Word Segmentation" colour="30">
+      {/* Add our custom block category, tou can place it outside category as well */}
+      <Category name="MeCab" colour="30">
         <Block type="ws_import_mecab"></Block>
         <Block type="ws_tagger"></Block>
         <Block type="text"></Block>
@@ -107,11 +120,13 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
   );
 };
 
+//Main application window
 const App = () => {
   const workspaceRef = useRef(null);
   const [togglePreviewCode, setTogglePreviewCode] = useState(false);
   const [executeCodeResponse, setExecuteCodeResponse] = useState([]);
   const [codePreview, setCodePreview] = useState("");
+  const [workspaceContent, setWorkspaceContent] = useState("");
 
   const getCode = () => {
     let codeFromBlock = BlocklyPython.workspaceToCode(
@@ -122,47 +137,86 @@ const App = () => {
     return codeFromBlock;
   };
 
+  //Test function 
+  //save workspace
+  const saveWorkspace = () => {
+    try {
+    var xml = Blockly.Xml.workspaceToDom(workspaceRef.current.workspace);
+    var xml_text = Blockly.Xml.domToText(xml);
+    // setWorkspaceContent(xml_text);
+    console.log(xml_text);
+    }catch(e) {
+      console.log(e)
+    }
+  }
+  //load workspace
+  const loadWorkspace = () => {
+
+  }
+  //END bug function------
+
+  //Generate code from block connection
   const generateCode = async () => {
     const codeFromBlock = getCode();
     const response = await babyAiService(codeFromBlock);
     setExecuteCodeResponse(response.data.split("\n"));
   };
 
+
+  //Toggle preview code besied OUTPUT tab
   const onHandlerTogglePreviewCode = () => {
     const toggle = togglePreviewCode ? false : true;
     getCode();
     setTogglePreviewCode(toggle);
   };
 
+  //Main rendered window, blockly workspace reference object is called here
   return (
     <>
       <NavbarComponent
         generateCode={generateCode}
         toggle={onHandlerTogglePreviewCode}
+        // save={saveWorkspace}
+        // load={loadWorkspace}
       />
-      <div style={{ display: togglePreviewCode ? "initial" : "none" }}>
-        <div style={{ padding: "20px" }}>
-          <CodeBlock
-            text={
-              codePreview === ""
-                ? "🔥 #Let's Started 🔥 \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                : codePreview
-            }
-            language={"python"}
-            showLineNumbers={true}
-            theme={dracula}
-            codeBlock
-          />
-        </div>
-      </div>
-      <div style={{ display: togglePreviewCode ? "none" : "initial" }}>
         <WorkspaceComponent
           initWorkspaceRef={(ref) => {
             workspaceRef.current = ref;
-          }}
-        />
+          }}/>
+      <div>
+      {/* PREVIEW button is press (toggle state), disply output*/}
+      <div style={{ display: togglePreviewCode ? "none" : "initial" }}> 
+        <ConsoleComponent data={executeCodeResponse.map((val) => `> ${val}`)} />
       </div>
-      <ConsoleComponent data={executeCodeResponse.map((val) => `> ${val}`)} />
+ 
+      {/* PREVIEW button is press (toggle state), display python code and output side by side*/}
+      <div style={{ display: togglePreviewCode ? "initial" : "none" }}> 
+          <div className="wrapperToggleView">
+            <div className="box">
+              <ConsoleComponent data={executeCodeResponse.map((val) => `> ${val}`)} />
+            </div>
+
+            <div className="box">    
+            <p style={{ padding: "0 5px" }}>
+              <b>Python Code</b>
+            </p>      
+              <CodeBlock
+                 text={
+                    codePreview === ""
+                      ? "🔥 #Let's Started 🔥 \n\n\n\n\n\n\n\n\n"
+                      : codePreview
+                  }
+                  language={"python"}
+                  showLineNumbers={true}
+                  theme={dracula}
+                  codeBlock
+              />
+            </div>
+          </div>
+      </div>
+      
+      </div>
+      
     </>
   );
 };

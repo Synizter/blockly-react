@@ -137,15 +137,18 @@ Blockly.Blocks['test_react_date_field'] = {
 //   }
 // }
 
+//Example of block creation
+//create variable that contain a block definition in JSON format
 var MeCabImport = {
   "type": "ws_import_mecab",
-  "message0": "Use MeCab word segmentation",
+  "message0": "MeCab import",
   "previousStatement": null,
   "nextStatement": null,
   "colour": 230,
   "tooltip": "",
   "helpUrl": ""
 };
+//Use the following information to create class
 Blockly.Blocks['ws_import_mecab'] = {
   init: function () {
     this.jsonInit(MeCabImport);
