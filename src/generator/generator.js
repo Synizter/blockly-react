@@ -54,6 +54,9 @@ Blockly.JavaScript['test_react_date_field'] = function (block) {
 //   return [code, Blockly.Python.ORDER_NONE];
 // };
 
+//Example
+//Define how the block should be translated to code
+//Node that the code is in string fomrat (javascirpt)
 Blockly.Python['ws_import_mecab'] = function(block) {
   var code = 'import MeCab\n';
   code += 'wakati = MeCab.Tagger("-Owakati")\n';
