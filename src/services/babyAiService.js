@@ -4,6 +4,7 @@ const BASE_URL = `http://babyai.org:5000/`;
 const HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Content-Type": "text/plain",
+  "Accept" : "*/*",
 };
 
 export const babyAiService = async (data) => {
@@ -15,9 +16,18 @@ export const babyAiService = async (data) => {
   return response;
 };
 
-export const exportWorkspace = async (data) => {
+export const exportWorkspace = async(data) => {
   const response = await axios.post(BASE_URL + 'workspace/export', data, {
     headers: HEADERS,
+    withCredentials: true,
+    credentials: "same-origin",
+  });
+  return response;
+}
+
+export const downloadSavedWorkspace = async(filename) => {
+  const response = await axios.get(BASE_URL+ 'workspace/export/download/' + filename.replace(/'/g, ''), {
+    headers:HEADERS,
     withCredentials: true,
     credentials: "same-origin",
   });

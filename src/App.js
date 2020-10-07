@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import BlocklyComponent, { Block, Value, Field, Category } from "./Blockly";
 import BlocklyPython from "blockly/python";
-import { babyAiService, exportWorkspace } from "./services/babyAiService";
+import { babyAiService, exportWorkspace, downloadSavedWorkspace } from "./services/babyAiService";
 import { CodeBlock, dracula } from "react-code-blocks";
 import Blockly from 'blockly'
 
@@ -125,6 +125,7 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
 //Main application window
 const App = () => {
   var loadedContent = ""
+  var savedFilename = ""
   const workspaceRef = useRef(null); //workspace ref
 
   const [togglePreviewCode, setTogglePreviewCode] = useState(false);
@@ -150,8 +151,19 @@ const App = () => {
     console.log("This is your workspace as text");
     console.log("Copy the following line, create a new file and save as .txt")
     console.log(xml_text);
-    
-    // const response =  exportWorkspace(xml_text);
+
+
+    const response =  exportWorkspace(xml_text).then(res => {
+      // data_content = res.data;
+      savedFilename = res.data.split(',')[1].split(':')[1];
+      //TEST
+      const BASE_URL = `http://babyai.org:5000/workspace/export/download/` + savedFilename.replace(/'/g, '');
+      const HEADERS = {
+        "Accept" : "*/*",
+      };
+      window.open(BASE_URL, '_blank')
+      // console.log(data_content.split(',')[1].split(':')[1])
+    });
 
     }catch(e) {
       console.log(e)
