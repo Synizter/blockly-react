@@ -29,7 +29,7 @@ const ConsoleComponent = ({ data = [] }) => {
 };
 
 //Top bar componenet NOTE that save and load is in developed
-const NavbarComponent = ({ generateCode, toggle, save, load, input}) => {
+const NavbarComponent = ({ generateCode, toggle, save, input}) => {
   return (
     <div
       style={{
@@ -61,10 +61,7 @@ const NavbarComponent = ({ generateCode, toggle, save, load, input}) => {
         <button onClick={save} className="saveBtn">
           Save
         </button>
-        <button onClick={load} className="loadBtn">
-          Load
-        </button>
-        <input type="file" name="file" onChange={input} display="none"/>
+        <input type="file" name="file" onChange={input} className="custom-file-input"/>
         
       </div>
     </div>
@@ -141,53 +138,36 @@ const App = () => {
     return codeFromBlock;
   };
 
-  //Test function 
-  //save workspace
   const saveWorkspace = () => {
     try {
-    var xml = Blockly.Xml.workspaceToDom(workspaceRef.current.workspace);
-    var xml_text = Blockly.Xml.domToText(xml);
-    // setWorkspaceContent(xml_text);
-    console.log("This is your workspace as text");
-    console.log("Copy the following line, create a new file and save as .txt")
-    console.log(xml_text);
+      var xml = Blockly.Xml.workspaceToDom(workspaceRef.current.workspace); //convert all block to xml
+      var xml_text = Blockly.Xml.domToText(xml); //convert xml to text
+      const response =  exportWorkspace(xml_text).then( res => {
+        //Open an new browser tab to trigger built-in downloader 
+        savedFilename = res.data.split(',')[1].split(':')[1];
+        const BASE_URL = `http://babyai.org:5000/workspace/export/download/` + savedFilename.replace(/'/g, '');
+        const HEADERS = {
+          "Accept" : "*/*",
+        };
+        window.open(BASE_URL, '_blank')
+      }).catch(err => {
+        alert(err);
+      });
 
-
-    const response =  exportWorkspace(xml_text).then(res => {
-      // data_content = res.data;
-      savedFilename = res.data.split(',')[1].split(':')[1];
-      //TEST
-      const BASE_URL = `http://babyai.org:5000/workspace/export/download/` + savedFilename.replace(/'/g, '');
-      const HEADERS = {
-        "Accept" : "*/*",
-      };
-      window.open(BASE_URL, '_blank')
-      // console.log(data_content.split(',')[1].split(':')[1])
-    });
-
-    }catch(e) {
-      console.log(e)
-    }
+      }catch(e) {
+        alert(e)
+      }
   }
-  //load workspace
   const loadWorkspace = () => {
-    // const test = '<xml xmlns="https://developers.google.com/blockly/xml"><block type="controls_repeat_ext" id="{]bu2.d];];(p7qjm0tL" x="290" y="96"><value name="TIMES"><block type="math_number" id="?Jdii%THAK4XU=9ex77A"><field name="NUM">10</field></block></value><statement name="DO"><block type="text_print" id="*iL-qlAy/xh%4aB#zPMj"><value name="TEXT"><block type="text" id="Y9ph%[APaN)B$+_grX}7"><field name="TEXT">test</field></block></value></block></statement></block></xml>'
-    // const saved = Blockly.Xml.textToDom(test)
-    // Blockly.Xml.clearWorkspaceAndLoadFromXml(saved, workspaceRef.current.workspace)
-    const XML = Blockly.Xml.textToDom(loadedContent)
-    Blockly.Xml.clearWorkspaceAndLoadFromXml(XML, workspaceRef.current.workspace)
-  }
-
-  const onFileChangeHandle = (event) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const text = (e.target.result)
-      loadedContent = text;
+    try {
+      const XML = Blockly.Xml.textToDom(loadedContent)
+      Blockly.Xml.clearWorkspaceAndLoadFromXml(XML, workspaceRef.current.workspace)
+    }catch(e){
+      alert(e)
+      alert('File may be corrupted!')
     }
-    reader.readAsText(event.target.files[0])
-  }
 
-  //END test function------
+  }
 
   //Generate code from block connection
   const generateCode = async () => {
@@ -199,13 +179,26 @@ const App = () => {
       alert('Cannot execute a code for reason: ' + e)
     }
   };
-
   //Toggle preview code besied OUTPUT tab
   const onHandlerTogglePreviewCode = () => {
     const toggle = togglePreviewCode ? false : true;
     getCode();
     setTogglePreviewCode(toggle);
   };
+
+  const onFileChangeHandle = (event) => {
+    try {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = (e.target.result)
+        loadedContent = text;
+        loadWorkspace();
+      }
+      reader.readAsText(event.target.files[0])
+    }catch(e) {
+      console.log(e)
+    }
+  }
 
   //Main rendered window, blockly workspace reference object is called here
   return (
@@ -214,12 +207,14 @@ const App = () => {
         generateCode={generateCode}
         toggle={onHandlerTogglePreviewCode}
         save={saveWorkspace}
-        load={loadWorkspace}
         input={onFileChangeHandle}
       />
         <WorkspaceComponent
           initWorkspaceRef={(ref) => {
             workspaceRef.current = ref;
+            // Prevent flyout from automatically closed
+            Blockly.Flyout.prototype.autoClose = false
+            
           }}/>
       <div>
       {/* PREVIEW button is press (toggle state), disply output*/}

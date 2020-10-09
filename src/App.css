@@ -64,6 +64,29 @@ ompile) Button */
 .loadBtn:hover {
   background-color: rgb(70, 80, 70);
 }
+
+.custom-file-input::-webkit-file-upload-button{
+  visibility: hidden;
+
+}
+.custom-file-input::before{
+  content: 'Load';
+  cursor: pointer;
+  color: #ffff;
+  background-color: rgb(12, 14, 12);
+  padding: 5px 10px;
+  border: solid 1px rgb(12, 14, 12);
+  border-radius: 5px;
+  outline: none;
+  margin: 0px 5px;
+  transition: all 100ms ease-in;
+  display: inline-block;
+
+  -webkit-user-select: none;
+}
+.custom-file-input:hover::before {
+  border-color: black;
+}
 /* Wrapper for items */
 
 .wrapperItemResult {
