@@ -29,6 +29,7 @@ import * as Blockly from 'blockly/core';
 // Since we're using json to initialize the field, we'll need to import it.
 import '../fields/BlocklyReactField';
 import '../fields/DateField';
+import { Block } from '../Blockly';
 
 var testReactField = {
   type: 'test_react_field',
@@ -178,3 +179,130 @@ Blockly.Blocks['ws_tagger'] = {
     this.setStyle('loop_blocks');
   },
 };
+
+
+//Single Perceptron for output realize
+var SinglePerceptron = {
+  "type": "xor_single_perceptron",
+  "message0": "Single Perceptron for Logic Realize %1 Input X1 %2 W1 %3 %4 Input X2 %5 W2 %6 %7 Activation function: %8",
+  "args0": [
+    {
+      "type":"input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "X1",
+      "value": 0,
+      "min": 0,
+      "max": 1
+    }, 
+    {
+      "type": "field_number",
+      "name": "W1",
+      "value": 0
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "X2",
+      "value": 0,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "field_number",
+      "name": "W2",
+      "value": 0
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "ACTIVATE_FUNC",
+      "align": "right"
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 44,
+  "tooltip": "",
+  "helpUrl": ""
+}
+Blockly.Blocks['single_perceptron'] = {
+  init: function () {
+    this.jsonInit(SinglePerceptron);
+    this.setStyle('loop_blocks')
+  }
+}
+// Activation Functio Block
+//Binary Step
+var BinaryStepAct = {
+  "type": "binary_step_act",
+  "message0": "Binary Step %1 param 1 : Zeta %2",
+  "args0": [
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "ZETA",
+      "value": 0
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "",
+  "helpUrl": ""
+}
+Blockly.Blocks['binary_step_act'] = {
+  init: function () {
+    this.jsonInit(BinaryStepAct);
+    this.setStyle('loop_blocks')
+    //Although color is already define in JSON, jsonInit function seem not to recognize a 'colour' method
+    this.setColour(BinaryStepAct['colour']); //set color using JSON attribute
+  }
+}
+
+//Sigmoid
+var SigmoidAct = {
+  "type": "sigmoid_act",
+  "message0": "Sigmoid %1 param 1: Zeta  %2 %3 param 2: Alpha %4",
+  "args0": [
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "ZETA",
+      "value": 0,
+      "min": -1,
+      "max": 1,
+      "precision": 0.000001
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "ALPHA",
+      "value": 0.5,
+      "min": 0,
+      "max": 1,
+      "precision": 0.000001
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Zeta (-1,1) define a threshold while Alpha (0,1) define a learning rate of sigmoid from its equation",
+  "helpUrl": "https://en.wikipedia.org/wiki/Sigmoid_function"
+}
+Blockly.Blocks['sigmoid_act'] = {
+  init: function () {
+    this.jsonInit(SigmoidAct);
+    this.setStyle('loop_blocks');
+    this.setColour(BinaryStepAct['colour']); //set color using JSON attribute
+  }
+}

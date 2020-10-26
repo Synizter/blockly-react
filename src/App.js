@@ -115,6 +115,14 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
         <Block type="text"></Block>
         <Block type="text_print"></Block>
       </Category>
+
+      <Category name="Simple NN" colour="90">
+        <Block type="single_perceptron"></Block>
+      </Category>
+      <Category name="Activation Function" colour="120">
+        <Block type="binary_step_act"></Block>
+        <Block type="sigmoid_act"></Block>
+      </Category>
     </BlocklyComponent>
   );
 };
@@ -199,7 +207,11 @@ const App = () => {
       console.log(e)
     }
   }
-
+  //TEST
+  function rtCodeUpdateFunction(event) {
+    var code = getCode();
+    setCodePreview(code);
+  }
   //Main rendered window, blockly workspace reference object is called here
   return (
     <>
@@ -213,7 +225,8 @@ const App = () => {
           initWorkspaceRef={(ref) => {
             workspaceRef.current = ref;
             // Prevent flyout from automatically closed
-            Blockly.Flyout.prototype.autoClose = false
+            Blockly.Flyout.prototype.autoClose = false;
+            //Add real-time code generation callback
             
           }}/>
       <div>
