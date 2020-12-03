@@ -47,7 +47,7 @@ const NavbarComponent = ({ generateCode, toggle, save, input}) => {
             margin: 0,
           }}
         >
-          Blockly Editor
+          TEMI Block Programming
         </h3>
       </div>
       <div style={{}}>
@@ -110,7 +110,6 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
 
       {/* Add our custom block category, tou can place it outside category as well */}
       <Category name="MeCab" colour="30">
-        <Block type="ws_import_mecab"></Block>
         <Block type="ws_tagger"></Block>
         <Block type="text"></Block>
         <Block type="text_print"></Block>
@@ -123,6 +122,24 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
         <Block type="binary_step_act"></Block>
         <Block type="sigmoid_act"></Block>
       </Category>
+
+      {/* <Category name="Temi Skill" colour="300">
+        <Block type="speech_say"></Block>
+        <Block type="locations_goto"></Block>
+        <Block type="follow_constrained"></Block>
+        <Block type="movement_turn"></Block>
+        <Block type="locations_go_home"></Block>
+        <Block type="call_person"></Block>
+        <Block type="movement"></Block>
+        <Block type="movement_tilt"></Block>
+        <Block type="movement_joystick"></Block>
+        <Block type="follow_unconstrained"></Block>
+      </Category>
+
+      <Category name="Event" colour="300">
+        <Block type="event_block"></Block>
+      </Category> */}
+      
     </BlocklyComponent>
   );
 };
@@ -182,6 +199,8 @@ const App = () => {
     const codeFromBlock = getCode();
     try{
     const response = await babyAiService(codeFromBlock);
+    //Set output console to try exexting
+    ConsoleComponent(["Try Executing",]);
     setExecuteCodeResponse(response.data.split("\n"));
     }catch(e) {
       alert('Cannot execute a code for reason: ' + e)
@@ -226,6 +245,7 @@ const App = () => {
             workspaceRef.current = ref;
             // Prevent flyout from automatically closed
             Blockly.Flyout.prototype.autoClose = false;
+           // workspaceRef.current.addChangeListener(getCode)
             //Add real-time code generation callback
             
           }}/>

@@ -31,114 +31,6 @@ import '../fields/BlocklyReactField';
 import '../fields/DateField';
 import { Block } from '../Blockly';
 
-var testReactField = {
-  type: 'test_react_field',
-  message0: 'custom field %1',
-  args0: [
-    {
-      type: 'field_react_component',
-      name: 'FIELD',
-      text: 'Click me',
-    },
-  ],
-  previousStatement: null,
-  nextStatement: null,
-};
-
-Blockly.Blocks['test_react_field'] = {
-  init: function () {
-    this.jsonInit(testReactField);
-    this.setStyle('loop_blocks');
-  },
-};
-
-var reactDateField = {
-  type: 'test_react_date_field',
-  message0: 'date field %1',
-  args0: [
-    {
-      type: 'field_react_date',
-      name: 'DATE',
-      date: '01/01/2020',
-    },
-  ],
-  previousStatement: null,
-  nextStatement: null,
-};
-
-Blockly.Blocks['test_react_date_field'] = {
-  init: function () {
-    this.jsonInit(reactDateField);
-    this.setStyle('loop_blocks');
-  },
-};
-
-// var PTNLPImportTokenize = {
-//   "type": "ptnlp_word_tokenize_import",
-//   "message0": "Use word tokenize of pythainlp",
-//   "previousStatement": null,
-//   "nextStatement": null,
-//   "colour": 230,
-//   "tooltip": "",
-//   "helpUrl": ""
-// }
-// Blockly.Blocks['ptnlp_word_tokenize_import'] = {
-//   init: function() {
-//     this.jsonInit(PTNLPImportTokenize);
-//     this.setStyle('loop_blocks');
-//   }
-// }
-
-// var PTNLPTokenizeWord = {
-//   "type": "ptnlp_tokenize_word",
-//   "message0": "Tokenize : %1 with engine %2",
-//   "args0": [
-//     {
-//       "type": "input_value",
-//       "name": "TEXT_INPUT",
-//       "check": "String"
-//     },
-//     {
-//       "type": "field_dropdown",
-//       "name": "ENGINE",
-//       "options": [
-//         [
-//           "ICU",
-//           "icu"
-//         ],
-//         [
-//           "DICTIONARY",
-//           "dict"
-//         ],
-//         [
-//           "PYLEXTO",
-//           "pylexto"
-//         ],
-//         [
-//           "MM",
-//           "mm"
-//         ],
-//         [
-//           "NEW MM",
-//           "newmm"
-//         ]
-//       ]
-//     }
-//   ],
-//   "inputsInline": true,
-//   "output":null,
-//   "colour": 230,
-//   "tooltip": "",
-//   "helpUrl": "https://pythainlp.readthedocs.io/en/latest/pythainlp-1-4-thai/"
-// }
-// Blockly.Blocks['ptnlp_tokenize_word'] = {
-//   init: function() {
-//     this.jsonInit(PTNLPTokenizeWord);
-//     this.setStyle('loop_blocks');
-//   }
-// }
-
-//Example of block creation
 //create variable that contain a block definition in JSON format
 var MeCabImport = {
   "type": "ws_import_mecab",
@@ -306,3 +198,149 @@ Blockly.Blocks['sigmoid_act'] = {
     this.setColour(BinaryStepAct['colour']); //set color using JSON attribute
   }
 }
+
+//Temi block
+Blockly.Blocks['speech_say'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Say")
+        .appendField(new Blockly.FieldTextInput("hello world"), "utterance")
+        .appendField("in")
+        .appendField(new Blockly.FieldDropdown([["Thai","TH"], ["English","EN"], ["Japanese","JP"]]), "language_options");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(315);
+ this.setTooltip("Type what you want temi to say, select languge either English, Japanese or Thai");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['locations_goto'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Go to")
+        .appendField(new Blockly.FieldTextInput("kitchen"), "location");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Command temi to go to a pre-defined location");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['follow_unconstrained'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Follow");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(180);
+ this.setTooltip("Follow the nearest person in front of temi");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['follow_constrained'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Follow")
+        .appendField("(in-place)");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(180);
+ this.setTooltip("Follow (in-place) the nearest person in front of temi");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['movement_turn'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Turn")
+        .appendField(new Blockly.FieldAngle(90), "angle");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Turn temi by a specified angle");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['movement_tilt'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Tilt")
+        .appendField(new Blockly.FieldNumber(0, -15, 55), "angle");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Tilt temi by a specified angle. Choose a value between -15 and 55.");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['movement_joystick'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Move")
+        .appendField("X:")
+        .appendField(new Blockly.FieldNumber(0), "x")
+        .appendField("Y:")
+        .appendField(new Blockly.FieldNumber(0), "y");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Move temi along the X and Y axis");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['movement'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Moves")
+        .appendField(new Blockly.FieldDropdown([["forward","FWD"], ["baackward","BWD"]]), "direction");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("define direction of movement");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['locations_go_home'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Return Home");
+    this.setPreviousStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Command temi to return Home");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['call_person'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Call")
+        .appendField(new Blockly.FieldTextInput(""), "contact");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Call a person in contact list");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['event_block'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Event:")
+        .appendField(new Blockly.FieldDropdown([["out of bed","EVT_OUT_OF_BED"], ["sitting","EVT_SIT_ON_BED"]]), "event");
+    this.appendStatementInput("event_out_of_bed")
+        .setCheck(null);
+    this.setColour(230);
+ this.setTooltip("event for block (none-sequence)");
+ this.setHelpUrl("");
+  }
+};
