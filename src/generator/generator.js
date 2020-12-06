@@ -36,101 +36,42 @@ Blockly.JavaScript['test_react_date_field'] = function (block) {
   return 'console.log(' + block.getField('DATE').getText() + ');\n';
 };
 
-// Blockly.Python['ptnlp_word_tokenize_import'] = function(block) {
-//   var code = 'from pythainlp.tokenize import word_tokenize\n';
-//   return code;
-// };
-
-// Blockly.Python['ptnlp_tokenize_word'] = function(block) {
-//   var value_text_input = Blockly.Python.valueToCode(block, 'TEXT_INPUT', Blockly.Python.ORDER_ATOMIC);
-//   var dropdown_engine = block.getFieldValue('ENGINE');
-//   var mapObj = {
-//     TEXT: value_text_input,
-//     ENGINES: dropdown_engine
-//   };
-//   var code = 'word_tokenize(TEXT, engine=\'ENGINES\')'.replace(/TEXT|ENGINES/gi, function(matched) {
-//     return mapObj[matched];
-//   });
-//   return [code, Blockly.Python.ORDER_NONE];
-// };
-
-//Example
-//Define how the block should be translated to code
-//Node that the code is in string fomrat (javascirpt)
-Blockly.Python['ws_import_mecab'] = function(block) {
-  var code = 'import MeCab\n';
-  code += 'wakati = MeCab.Tagger("-Owakati")\n';
-  return code;
-};
-
-Blockly.Python['ws_tagger'] = function(block) {
-  Blockly.Python.provideFunction_('sigmoid_act', ['import MeCab', 'wakati = MeCab.Tagger("-Owakati")'])//Auto import math
-  var value_input_text = Blockly.Python.valueToCode(block, 'INPUT_TEXT', Blockly.Python.ORDER_ATOMIC);
-  var code = 'wakati.parse("TEXT").split()'.replace(/TEXT/gi,value_input_text.replace(/\'/g, ''));
-  return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['single_perceptron'] = function(block) {
-  var number_x1 = block.getFieldValue('X1');
-  var number_w1 = block.getFieldValue('W1');
-  var number_x2 = block.getFieldValue('X2');
-  var number_w2 = block.getFieldValue('W2');
-  var value_activation_funciton = Blockly.Python.valueToCode(block, 'ACTIVATE_FUNC', Blockly.Python.ORDER_NONE);
-  // TODO: Assemble Python into code variable.
-  //This implementation is quite staic in variable name since there's no variable block implemented 
-  var code = "#-----Simple NN Block---------\n"
-  code += 'in_x1 = {}\n'.replace(/{}/g, number_x1);
-  code += 'in_x2 = {}\n'.replace(/{}/g, number_x2);
-  code += 'w1 = {}\n'.replace(/{}/g, number_w1);
-  code += 'w2 = {}\n'.replace(/{}/g, number_w2);
-  code += 'out = (w1 * in_x1) + (w2 * in_x2)\n';
-
-  code += value_activation_funciton;
-  return code;
-};
-
-//Activation Function Block
-//Binary Step
-Blockly.Python['binary_step_act'] = function(block) {
-  var number_zeta = block.getFieldValue('ZETA');
-  // TODO: Assemble Python into code variable.
-  var code = "#-----Binary step Block---------\n"
-  code += 'zeta = {}\n'.replace(/{}/g, number_zeta);
-  code += 'if out > zeta:\n'
-  code += '\tprint("Output is 1")\r\n'
-  code += 'else:\n'
-  code += '\tprint("Output is 0")\r\n'
-  return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['sigmoid_act'] = function(block) {
-  var number_zeta = block.getFieldValue('ZETA');
-  var number_alpha = block.getFieldValue('ALPHA');
-  Blockly.Python.provideFunction_('sigmoid_act', ['import math'])//Auto import math
-  // TODO: Assemble Python into code variable.
-  var code = "#-----Sigmoid Block---------\n"
-  code += 'zeta  = {}\n'.replace(/{}/g, number_zeta);
-  code += 'alpha = {}\n'.replace(/{}/g, number_alpha);
-  code += 'y = (1 / (1 + math.exp(-1 * (out - zeta) * alpha)))\n'
-  code += 'print(\'Output is : {}\'.format(y))\n'
-  // TODO: Change ORDER_NONE to the correct strength.
-  return [code, Blockly.Python.ORDER_NONE];
-};
-
 //temi customn block
 Blockly.JavaScript['speech_say'] = function(block) {
   var text_utterance = block.getFieldValue('utterance');
   var dropdown_language_options = block.getFieldValue("language_options");
-  var code = `robot.speak(TtsRequest.create("${text_utterance}", false));\n`;
+  // var code = `robot.speak(TtsRequest.create("${text_utterance}", false));\n`;
+  var code = `actionlist.append("action":"SPEAK", "content":"${text_utterance}", "language":"${dropdown_language_options}")`
   return code;
 };
 
 Blockly.JavaScript['locations_goto'] = function(block) {
   var text_location = block.getFieldValue('location');
-  var code = `robot.goTo("${text_location}");\n`;
+  // var code = `robot.goTo("${text_location}");\n`; 
+  var code = `actionlist.append("action":"GOTO", "content":"${text_location}")`
   // @TODO Add wait
   return code;
 };
+
+// Blockly.JavaScript['call_person'] = function(block) {
+//   var text_contact = block.getFieldValue('contact');
+//   // var code = `robot.call(${text_contact});\n`;
+  
+//   return code
+// };
+Blockly.Python['call_person'] = function(block) {
+  var dropdown_contact = block.getFieldValue('contact');
+  var code = `actionlist.append("action":"CALL", "content":"${dropdown_contact}")`
+  return code;
+};
+
+Blockly.JavaScript['movement'] = function(block) {
+  var dropdown_direction = block.getFieldValue('direction');
+  var code = `robot.move(${dropdown_direction})`;
+  return code;
+}
+
+// UNDERDEVELOP----------------------------------------------------------
 
 Blockly.JavaScript['follow_unconstrained'] = function(block) {
   var code = `robot.beWithMe();\n`;
@@ -165,18 +106,6 @@ Blockly.JavaScript['locations_go_home'] = function(block) {
   var code = `robot.goTo('home base');\n`;
   return code;
 };
-
-Blockly.JavaScript['call_person'] = function(block) {
-  var text_contact = block.getFieldValue('contact');
-  var code = `robot.call(${text_contact});\n`;
-  return code
-};
-
-Blockly.JavaScript['movement'] = function(block) {
-  var dropdown_direction = block.getFieldValue('direction');
-  var code = `robot.move(${dropdown_direction})`;
-  return code;
-}
 
 Blockly.JavaScript['event_block'] = function(block) {
   var dropdown_event = block.getFieldValue('event');

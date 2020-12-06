@@ -108,22 +108,7 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
         <Block type="math_single"></Block>
       </Category>
 
-      {/* Add our custom block category, tou can place it outside category as well */}
-      <Category name="MeCab" colour="30">
-        <Block type="ws_tagger"></Block>
-        <Block type="text"></Block>
-        <Block type="text_print"></Block>
-      </Category>
-
-      <Category name="Simple NN" colour="90">
-        <Block type="single_perceptron"></Block>
-      </Category>
-      <Category name="Activation Function" colour="120">
-        <Block type="binary_step_act"></Block>
-        <Block type="sigmoid_act"></Block>
-      </Category>
-
-      {/* <Category name="Temi Skill" colour="300">
+      <Category name="Temi Skill" colour="300">
         <Block type="speech_say"></Block>
         <Block type="locations_goto"></Block>
         <Block type="follow_constrained"></Block>
@@ -138,7 +123,7 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
 
       <Category name="Event" colour="300">
         <Block type="event_block"></Block>
-      </Category> */}
+      </Category>
       
     </BlocklyComponent>
   );
