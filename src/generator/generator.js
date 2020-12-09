@@ -37,18 +37,18 @@ Blockly.JavaScript['test_react_date_field'] = function (block) {
 };
 
 //temi customn block
-Blockly.JavaScript['speech_say'] = function(block) {
+Blockly.Python['speech_say'] = function(block) {
   var text_utterance = block.getFieldValue('utterance');
   var dropdown_language_options = block.getFieldValue("language_options");
   // var code = `robot.speak(TtsRequest.create("${text_utterance}", false));\n`;
-  var code = `actionlist.append("action":"SPEAK", "content":"${text_utterance}", "language":"${dropdown_language_options}")`
+  var code = `actionlist.append('{"action":"SPEAK", "content":"${text_utterance}", "language":"${dropdown_language_options}"}')\n`
   return code;
 };
 
-Blockly.JavaScript['locations_goto'] = function(block) {
+Blockly.Python['locations_goto'] = function(block) {
   var text_location = block.getFieldValue('location');
   // var code = `robot.goTo("${text_location}");\n`; 
-  var code = `actionlist.append("action":"GOTO", "content":"${text_location}")`
+  var code = `actionlist.append('{"action":"GOTO", "content":"${text_location}"}')\n`
   // @TODO Add wait
   return code;
 };
@@ -61,19 +61,24 @@ Blockly.JavaScript['locations_goto'] = function(block) {
 // };
 Blockly.Python['call_person'] = function(block) {
   var dropdown_contact = block.getFieldValue('contact');
-  var code = `actionlist.append("action":"CALL", "content":"${dropdown_contact}")`
+  var code = `actionlist.append('{"action":"CALL", "content":"${dropdown_contact}"}')\n`
   return code;
 };
 
+Blockly.Python['locations_go_home'] = function(block) {
+  var code = `actionlist.append('{"action":"GOTO", "content":"Home Base"}')\n`
+  return code;
+};
+
+
+// UNDERDEVELOP----------------------------------------------------------
 Blockly.JavaScript['movement'] = function(block) {
   var dropdown_direction = block.getFieldValue('direction');
-  var code = `robot.move(${dropdown_direction})`;
+  var code = `robot.move(${dropdown_direction})\n`;
   return code;
 }
 
-// UNDERDEVELOP----------------------------------------------------------
-
-Blockly.JavaScript['follow_unconstrained'] = function(block) {
+Blockly.Python['follow_unconstrained'] = function(block) {
   var code = `robot.beWithMe();\n`;
   return code;
 };
@@ -83,31 +88,28 @@ Blockly.JavaScript['follow_constrained'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['movement_turn'] = function(block) {
+Blockly.Python['movement_turn'] = function(block) {
   var number_angle = block.getFieldValue('angle');
   var code = `robot.turnBy(${number_angle});\n`;
   return code;
 };
 
-Blockly.JavaScript['movement_tilt'] = function(block) {
+Blockly.Python['movement_tilt'] = function(block) {
   var number_angle = block.getFieldValue('angle');
   var code = `robot.tiltBy(${number_angle});\n`;
   return code;
 };
 
-Blockly.JavaScript['movement_joystick'] = function(block) {
+Blockly.Python['movement_joystick'] = function(block) {
   var number_x = block.getFieldValue('x');
   var number_y = block.getFieldValue('y');
   var code = `robot.skidJoy(${number_x}, ${number_y});\n`;
   return code;
 };
 
-Blockly.JavaScript['locations_go_home'] = function(block) {
-  var code = `robot.goTo('home base');\n`;
-  return code;
-};
 
-Blockly.JavaScript['event_block'] = function(block) {
+
+Blockly.Python['event_block'] = function(block) {
   var dropdown_event = block.getFieldValue('event');
   var statements_event_out_of_bed = Blockly.JavaScript.statementToCode(block, 'event_out_of_bed');
   // TODO: Assemble JavaScript into code variable.

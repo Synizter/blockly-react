@@ -16,6 +16,15 @@ export const babyAiService = async (data) => {
   return response;
 };
 
+export const babyAiServiceTemi = async (data) => {
+  const response = await axios.post(BASE_URL + 'temi-cmd', data, {
+    headers: HEADERS,
+    withCredentials: true,
+    credentials: "same-origin",
+  });
+  return response;
+};
+
 export const exportWorkspace = async(data) => {
   const response = await axios.post(BASE_URL + 'workspace/export', data, {
     headers: HEADERS,

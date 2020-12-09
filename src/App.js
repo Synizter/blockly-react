@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import BlocklyComponent, { Block, Value, Field, Category } from "./Blockly";
 import BlocklyPython from "blockly/python";
-import { babyAiService, exportWorkspace, downloadSavedWorkspace } from "./services/babyAiService";
+import { babyAiService, babyAiServiceTemi, exportWorkspace, downloadSavedWorkspace } from "./services/babyAiService";
 import { CodeBlock, dracula } from "react-code-blocks";
 import Blockly from 'blockly'
 
@@ -181,12 +181,16 @@ const App = () => {
 
   //Generate code from block connection
   const generateCode = async () => {
+    var code = "actionList = []\n"
     const codeFromBlock = getCode();
     try{
-    const response = await babyAiService(codeFromBlock);
+      code += codeFromBlock;
+      console.log(code);
+      const response = await babyAiServiceTemi(code);
+    // const response = await babyAiService(code);
     //Set output console to try exexting
-    ConsoleComponent(["Try Executing",]);
-    setExecuteCodeResponse(response.data.split("\n"));
+    // ConsoleComponent(["Try Executing",]);
+    // setExecuteCodeResponse(response.data.split("\n"));
     }catch(e) {
       alert('Cannot execute a code for reason: ' + e)
     }
@@ -230,6 +234,7 @@ const App = () => {
             workspaceRef.current = ref;
             // Prevent flyout from automatically closed
             Blockly.Flyout.prototype.autoClose = false;
+            Blockly.Workspace.addChangeListener(getCode)
            // workspaceRef.current.addChangeListener(getCode)
             //Add real-time code generation callback
             
