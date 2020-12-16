@@ -234,7 +234,7 @@ const App = () => {
             workspaceRef.current = ref;
             // Prevent flyout from automatically closed
             Blockly.Flyout.prototype.autoClose = false;
-            Blockly.Workspace.addChangeListener(getCode)
+            // Blockly.Workspace.addChangeListener(getCode)
            // workspaceRef.current.addChangeListener(getCode)
             //Add real-time code generation callback
             

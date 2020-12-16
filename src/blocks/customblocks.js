@@ -46,6 +46,32 @@ Blockly.Blocks['speech_say'] = {
   }
 };
 
+Blockly.Blocks['call_person'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Call")
+        .appendField(new Blockly.FieldDropdown([["Man","fe1090ed941db12ed1d350730031ea5b"], ["Pear","4990c18cea5e6604cc1adc384fe224e8"], ["AjVirach","67696f1ff709a3b0804ae43641ed8d85"]]), "contact");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("Select person to call");
+  }
+};
+
+Blockly.Blocks['event_block'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Event:")
+        .appendField(new Blockly.FieldDropdown([["out of bed","EVT_OUT_OF_BED"], ["sitting","EVT_SIT_ON_BED"]]), "event");
+    this.appendStatementInput("event_out_of_bed")
+        .setCheck(null);
+    this.setColour(230);
+ this.setTooltip("event for block (none-sequence)");
+ this.setHelpUrl("");
+  }
+};
+
 Blockly.Blocks['locations_goto'] = {
   init: function() {
     this.appendDummyInput()
@@ -58,6 +84,8 @@ Blockly.Blocks['locations_goto'] = {
  this.setHelpUrl("");
   }
 };
+
+// UNDERDEVELOP -------------------------------------------
 
 Blockly.Blocks['follow_unconstrained'] = {
   init: function() {
@@ -162,28 +190,3 @@ Blockly.Blocks['locations_go_home'] = {
 //  this.setHelpUrl("");
 //   }
 // };
-Blockly.Blocks['call_person'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Call")
-        .appendField(new Blockly.FieldDropdown([["Man","fe1090ed941db12ed1d350730031ea5b"], ["Pear","4990c18cea5e6604cc1adc384fe224e8"], ["AjVirach","67696f1ff709a3b0804ae43641ed8d85"]]), "contact");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
- this.setTooltip("");
- this.setHelpUrl("Select person to call");
-  }
-};
-
-Blockly.Blocks['event_block'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Event:")
-        .appendField(new Blockly.FieldDropdown([["out of bed","EVT_OUT_OF_BED"], ["sitting","EVT_SIT_ON_BED"]]), "event");
-    this.appendStatementInput("event_out_of_bed")
-        .setCheck(null);
-    this.setColour(230);
- this.setTooltip("event for block (none-sequence)");
- this.setHelpUrl("");
-  }
-};

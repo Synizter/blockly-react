@@ -41,7 +41,7 @@ Blockly.Python['speech_say'] = function(block) {
   var text_utterance = block.getFieldValue('utterance');
   var dropdown_language_options = block.getFieldValue("language_options");
   // var code = `robot.speak(TtsRequest.create("${text_utterance}", false));\n`;
-  var code = `actionlist.append('{"action":"SPEAK", "content":"${text_utterance}", "language":"${dropdown_language_options}"}')\n`
+  var code = `robot.speak("${text_utterance}", ${dropdown_language_options}")\n`
   return code;
 };
 
