@@ -47,7 +47,7 @@ const NavbarComponent = ({ generateCode, toggle, save, input}) => {
             margin: 0,
           }}
         >
-          TEMI Block Programming
+          Visual Programming for A.I and Robotic
         </h3>
       </div>
       <div style={{}}>
