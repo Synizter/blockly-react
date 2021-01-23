@@ -41,38 +41,36 @@ Blockly.Python['speech_say'] = function(block) {
   var text_utterance = block.getFieldValue('utterance');
   var dropdown_language_options = block.getFieldValue("language_options");
   // var code = `robot.speak(TtsRequest.create("${text_utterance}", false));\n`;
-  var code = `robot.speak("${text_utterance}", ${dropdown_language_options}")\n`
+  var code = `robot.speak("${text_utterance}", "${dropdown_language_options}")\n`
   return code;
 };
 
 Blockly.Python['locations_goto'] = function(block) {
   var text_location = block.getFieldValue('location');
   // var code = `robot.goTo("${text_location}");\n`; 
-  var code = `actionlist.append('{"action":"GOTO", "content":"${text_location}"}')\n`
+  // var code = `actionlist.append('{"action":"GOTO", "content":"${text_location}"}')\n`
+  var code = `robot.goto(${text_location})\n`
   // @TODO Add wait
   return code;
 };
 
-// Blockly.JavaScript['call_person'] = function(block) {
-//   var text_contact = block.getFieldValue('contact');
-//   // var code = `robot.call(${text_contact});\n`;
-  
-//   return code
-// };
+
 Blockly.Python['call_person'] = function(block) {
   var dropdown_contact = block.getFieldValue('contact');
-  var code = `actionlist.append('{"action":"CALL", "content":"${dropdown_contact}"}')\n`
+  // var code = `actionlist.append('{"action":"CALL", "content":"${dropdown_contact}"}')\n`
+  var code = `robot.call("${dropdown_contact}")\n`
   return code;
 };
 
 Blockly.Python['locations_go_home'] = function(block) {
-  var code = `actionlist.append('{"action":"GOTO", "content":"Home Base"}')\n`
+  // var code = `actionlist.append('{"action":"GOTO", "content":"Home Base"}')\n`
+  var code = `robot.goto('home base')\n`
   return code;
 };
 
 
 // UNDERDEVELOP----------------------------------------------------------
-Blockly.JavaScript['movement'] = function(block) {
+Blockly.Python['movement'] = function(block) {
   var dropdown_direction = block.getFieldValue('direction');
   var code = `robot.move(${dropdown_direction})\n`;
   return code;
@@ -83,7 +81,7 @@ Blockly.Python['follow_unconstrained'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['follow_constrained'] = function(block) {
+Blockly.Python['follow_constrained'] = function(block) {
   var code = `robot.constraintBeWith();\n`;
   return code;
 };

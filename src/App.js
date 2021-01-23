@@ -140,7 +140,14 @@ const App = () => {
   const [codePreview, setCodePreview] = useState("");
 
   const getCode = () => {
-    let codeFromBlock = BlocklyPython.workspaceToCode(
+    var code = 'import robot as temi\n'
+    code += 'from interface import CommandInterface\n'
+    code += 'temi_serial = \'01234\'\n'
+    code += 'mqtt = CommandInterface()\n'
+    code += 'mqtt.connect()\n'
+    code += 'robot = temi.Robot(mqtt, temi_serial)\n\n'
+
+    let codeFromBlock = code + BlocklyPython.workspaceToCode(
       workspaceRef.current.workspace
     );
 
@@ -181,12 +188,12 @@ const App = () => {
 
   //Generate code from block connection
   const generateCode = async () => {
-    var code = "actionList = []\n"
     const codeFromBlock = getCode();
+    console.log(codeFromBlock)
     try{
-      code += codeFromBlock;
-      console.log(code);
-      const response = await babyAiServiceTemi(code);
+      console.log(codeFromBlock);
+      // const response = await babyAiServiceTemi(code);
+      const response = await babyAiService(codeFromBlock)
     // const response = await babyAiService(code);
     //Set output console to try exexting
     // ConsoleComponent(["Try Executing",]);
