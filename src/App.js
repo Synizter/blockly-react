@@ -109,6 +109,7 @@ const WorkspaceComponent = ({ initWorkspaceRef }) => {
       </Category>
 
       <Category name="Temi Skill" colour="300">
+        <Block type="temi_start"></Block>
         <Block type="speech_say"></Block>
         <Block type="locations_goto"></Block>
         <Block type="follow_constrained"></Block>
@@ -140,14 +141,7 @@ const App = () => {
   const [codePreview, setCodePreview] = useState("");
 
   const getCode = () => {
-    var code = 'import robot as temi\n'
-    code += 'from interface import CommandInterface\n'
-    code += 'temi_serial = \'01234\'\n'
-    code += 'mqtt = CommandInterface()\n'
-    code += 'mqtt.connect()\n'
-    code += 'robot = temi.Robot(mqtt, temi_serial)\n\n'
-
-    let codeFromBlock = code + BlocklyPython.workspaceToCode(
+    let codeFromBlock = BlocklyPython.workspaceToCode(
       workspaceRef.current.workspace
     );
 
@@ -197,7 +191,7 @@ const App = () => {
     // const response = await babyAiService(code);
     //Set output console to try exexting
     // ConsoleComponent(["Try Executing",]);
-    // setExecuteCodeResponse(response.data.split("\n"));
+    setExecuteCodeResponse(response.data.split("\n"));
     }catch(e) {
       alert('Cannot execute a code for reason: ' + e)
     }

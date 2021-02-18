@@ -49,7 +49,7 @@ Blockly.Python['locations_goto'] = function(block) {
   var text_location = block.getFieldValue('location');
   // var code = `robot.goTo("${text_location}");\n`; 
   // var code = `actionlist.append('{"action":"GOTO", "content":"${text_location}"}')\n`
-  var code = `robot.goto(${text_location})\n`
+  var code = `robot.goto("${text_location}")\n`
   // @TODO Add wait
   return code;
 };
@@ -70,8 +70,14 @@ Blockly.Python['locations_go_home'] = function(block) {
 
 Blockly.Python['temi_start'] = function(block) {
   var text_temi_serial = block.getFieldValue('TEMI_SERIAL');
-  // TODO: Assemble Python into code variable.
-  var code = '...\n';
+  Blockly.Python.provideFunction_('temi_start_import', ['import robot as temi', 
+                        'from interface import CommandInterface', 
+                        `temi_serial = "${text_temi_serial}"`,
+                        'mqtt = CommandInterface()',
+                        'mqtt.connect()',
+                        'robot = temi.Robot(mqtt, temi_serial)'
+  ])
+  var code = '#--------- The program start here -----------\n';
   return code;
 };
 
