@@ -68,6 +68,12 @@ Blockly.Python['locations_go_home'] = function(block) {
   return code;
 };
 
+Blockly.Python['temi_start'] = function(block) {
+  var text_temi_serial = block.getFieldValue('TEMI_SERIAL');
+  // TODO: Assemble Python into code variable.
+  var code = '...\n';
+  return code;
+};
 
 // UNDERDEVELOP----------------------------------------------------------
 Blockly.Python['movement'] = function(block) {

@@ -85,6 +85,18 @@ Blockly.Blocks['locations_goto'] = {
   }
 };
 
+Blockly.Blocks['temi_start'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Start Temi blockly programming")
+        .appendField(new Blockly.FieldTextInput(""), "TEMI_SERIAL");
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Enter the serial number on Temi Screen");
+ this.setHelpUrl("");
+  }
+};
+
 // UNDERDEVELOP -------------------------------------------
 
 Blockly.Blocks['follow_unconstrained'] = {
